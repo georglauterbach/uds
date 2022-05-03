@@ -1,0 +1,92 @@
+#############################################################################
+#
+# Ubuntu 22.04 (Jammy Jellyfish)
+# /etc/apt/sources.list.d/uds.list
+#
+# The GPG keys are acquired by running
+# wget -qO- <SOME URL> | gpg --dearmor | sudo tee <SOME NAME>.gpg >/dev/null
+# or by installing the PPA temporarily
+# add-apt-repository -y ppa:mozillateam/ppa
+#
+#############################################################################
+
+#############################################################################
+#
+# Mozilla Firefox & Thunderbird
+# https://launchpad.net/~mozillateam/+archive/ubuntu/ppa
+#
+#############################################################################
+
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/mozillateam.gpg] http://ppa.launchpad.net/mozillateam/ppa/ubuntu/ jammy main
+
+#############################################################################
+#
+# Alacritty
+# https://launchpad.net/~aslatter/+archive/ubuntu/ppa
+#
+#############################################################################
+
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/alacritty.gpg] http://ppa.launchpad.net/aslatter/ppa/ubuntu/ jammy main
+
+#############################################################################
+#
+# Cryptomator
+# https://launchpad.net/~sebastian-stenzel/+archive/ubuntu/cryptomator
+#
+#############################################################################
+
+deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/cryptomator.gpg] http://ppa.launchpad.net/sebastian-stenzel/cryptomator/ubuntu/ jammy main
+
+#############################################################################
+#
+# GIT
+# https://launchpad.net/~git-core/+archive/ubuntu/ppa
+#
+#############################################################################
+
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/git-core.gpg] http://ppa.launchpad.net/git-core/ppa/ubuntu/ jammy main
+
+#############################################################################
+#
+# NeoVIM
+# https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable
+#
+#############################################################################
+
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/neovim-unstable.gpg] http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu/ jammy main
+
+#############################################################################
+#
+# ownCloud
+# https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/download/
+#
+#############################################################################
+
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/owncloud.gpg] https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_21.10/ /
+
+#############################################################################
+#
+# Regolith Linux
+# https://github.com/regolith-linux/voulage
+#
+#############################################################################
+
+# deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/regolith.gpg] https://regolith-release-ubuntu-jammy-amd64.s3.amazonaws.com jammy main
+
+#############################################################################
+#
+# Visual Studio Code
+# https://code.visualstudio.com/docs/setup/linux#_debian-and-ubuntu-based-distributions
+#
+#############################################################################
+
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/vscode.gpg] https://packages.microsoft.com/repos/code stable main
+
+#############################################################################
+#
+# ZeroTier
+# https://www.zerotier.com/download/
+#
+#############################################################################
+
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/zerotier.gpg] http://download.zerotier.com/debian/jammy jammy main
