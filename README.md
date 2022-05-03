@@ -11,6 +11,8 @@ _UDS_ is a Ubuntu \[GNU/Linux\] desktop setup application to configure
 
 _UDS_ configures [Ubuntu 22.04 LTS]. It installs various packages and places (new) configuration files. The desktop theme is based upon [Regolith Linux] 2.0, which combines the [GNOME] desktop environment and [i3]\(-gaps\).
 
+![Desktop](files/images/desktop.png)
+
 ## Usage
 
 We assume Ubuntu has already been installed - there are no special requirements or dependencies other than the packages shown in the first command below. The installation script can be downloaded and executed in the terminal. The first command will clone the repository and acquire the binary for installation. Make sure to execute the first command in the directory you want _UDS_'s files to be placed in.
@@ -19,6 +21,8 @@ We assume Ubuntu has already been installed - there are no special requirements 
 $ wget https://raw.githubusercontent.com/georglauterbach/uds/dev/scripts/setup.sh
 $ sudo --preserve-env=HOME,USER,LOG_LEVEL bash ./setup.sh
 ...
+
+$ reboot
 ```
 
 ## What _UDS_ Does

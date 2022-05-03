@@ -51,6 +51,19 @@ set -eEu -o pipefail
 shopt -s inherit_errexit
 cd /tmp || exit 1
 
+function purge_snapd
+{
+  command -v snap &>/dev/null || return 0
+  log 'inf' "Removing 'snapd'"
+  
+  rm -rf /var/cache/snapd/
+  apt-get -qq purge snapd gnome-software-plugin-snap
+  apt-mark -qq hold snapd
+  rm -rf "${HOME}/snapd"
+
+  log 'deb' "Finished purging 'snapd'"
+}
+
 function add_ppas
 {
   log 'inf' 'Adding PPAs'
@@ -154,19 +167,6 @@ function install_packages
   log 'deb' 'Finished installing packages'
 }
 
-function purge_snapd
-{
-  command -v snap &>/dev/null || return 0
-  log 'inf' "Removing 'snapd'"
-  
-  rm -rf /var/cache/snapd/
-  apt-get -qq purge snapd snapd gnome-software-plugin-snap
-  apt-mark -qq hold snapd
-  rm -rf "${HOME}/snapd"
-
-  log 'deb' "Finished purging 'snapd'"
-}
-
 function place_configuration_files
 {
   log 'inf' 'Placing configuration files'
@@ -230,7 +230,7 @@ function place_configuration_files
 
 function main
 {
-  log 'inf' 'Starting setup process'
+  log 'inf' 'Starting UDS setup process'
   log 'war' \
     'Remember to start this script with sudo' \
     '--preserve-env=USER,HOME - press CTRL-C to abort now'
@@ -241,7 +241,7 @@ function main
   install_packages
   place_configuration_files
 
-  log 'inf' 'Finished setup process'
+  log 'inf' 'Finished UDS setup process'
 }
 
 main "${@}"
