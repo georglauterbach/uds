@@ -1,0 +1,152 @@
+---
+name: Bug report
+description: File a bug report
+title: '[BUG] '
+labels:
+  - kind/bug
+  - meta/needs triage
+  - priority/medium
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Filing a report
+
+        Thank you for participating in this project and reporting a bug. `libbash`
+        is a community-driven project, and each contribution counts.
+
+        Please **fill out all the fields and checkboxes of this form** to make it
+        easier for maintainers to understand the problem and to solve it. The
+        maintainers and moderators are volunteers that need you to fill this template
+        with accurate informations in order to help you in the best and quickest way.
+        We will have to label your request with `meta/no template - no support` if
+        your request is sloppy and provides no way to help you correctly.
+
+        **Make sure** you read through the whole
+        [README](https://github.com/georglauterbach/libbash/blob/main/README.md) and
+        the [issue tracker](https://github.com/georglauterbach/libbash/issues) before
+        opening a new bug report.
+
+  - type: checkboxes
+    id: initial-checks
+    attributes:
+      label: Initial checks
+      description: Please read these carefully.
+      options:
+        - label: I'm using Bash version 5 or later.
+          required: true
+
+  - type: dropdown
+    id: affected-modules
+    attributes:
+      label: Which module is affected by this bug?
+      options:
+        - cri
+        - errors
+        - log
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are your trying to do?
+      description: Tell us what you're trying to achieve.
+      placeholder: I was sourcing `init.sh`` with the logs module
+      render: Markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happens-and-when
+    attributes:
+      label: What happens and when does it happen?
+      description: Tell us what is happening and when.
+      placeholder: I'm notified that I called `notify` without importing the `logs` module.
+      render: Markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-did-you-expect-to-happen
+    attributes:
+      label: What did you expect to happen?
+      description: Tell us what you expected.
+      placeholder: I expected to be able to use `notify`
+      render: Markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: how-do-we-replicate-this-issue
+    attributes:
+      label: How do we replicate the issue?
+      description: What did you do and how can we replicate this issue?
+      value: |
+        1.
+        2.
+        3.
+        ...
+      render: Markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: relevant-log-output
+    attributes:
+      label: Relevant log output
+      description: >
+        Show us relevant log output here. You can enable debug output
+        by setting the environment variable `DMS_DEBUG` to `1`.
+      render: Shell
+
+  - type: textarea
+    id: other-relevant-information
+    attributes:
+      label: Other relevant information
+      description: If there is more, you can tell us here. Make sure to use Markdown formatting here.
+      render: Markdown
+
+  - type: dropdown
+    id: experience
+    attributes:
+      label: What level of experience do you have with Bash?
+      description: >
+        **You are not obliged to answer this question**.
+        We do encourage answering though as it provides context to better assist you.
+        Less experienced users tend to make common mistakes, which is ok; by
+        letting us know we can spot those more easily.
+      options:
+        - I'm very inexperienced with Bash
+        - I'm inexperienced with Bash
+        - I'm somewhat comfortable with Bash
+        - I'm very comfortable with Bash
+        - I'm an expert when it comes to Bash
+        - I'm a experienced, well-versed veteran when it comes to Bash (please tell us more :D)
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms-code-of-conduct
+    attributes:
+      label: Code of conduct
+      options:
+        - label: >
+            I agree to follow [our code of conduct
+            (Contributor Covenant)](https://www.contributor-covenant.org/).
+          required: true
+        - label: >
+            I have read the [README](https://github.com/georglauterbach/libbash/blob/main/README.md)
+            and I searched the [issue tracker](https://github.com/georglauterbach/libbash/issues)
+            but could not find a solution.
+          required: true
+
+  - type: textarea
+    id: form-improvements
+    attributes:
+      label: Improvements to this form?
+      description: >
+        If you have criticism or general feedback about this issue form, feel free
+        to tell us so we can enhance the experience for everyone.
+      render: Markdown

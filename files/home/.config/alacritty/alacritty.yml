@@ -1,0 +1,31 @@
+---
+#  █████╗ ██╗      █████╗  ██████╗██████╗ ██╗████████╗████████╗██╗   ██╗
+# ██╔══██╗██║     ██╔══██╗██╔════╝██╔══██╗██║╚══██╔══╝╚══██╔══╝╚██╗ ██╔╝
+# ███████║██║     ███████║██║     ██████╔╝██║   ██║      ██║    ╚████╔╝
+# ██╔══██║██║     ██╔══██║██║     ██╔══██╗██║   ██║      ██║     ╚██╔╝
+# ██║  ██║███████╗██║  ██║╚██████╗██║  ██║██║   ██║      ██║      ██║
+# ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝   ╚═╝      ╚═╝      ╚═╝
+
+#####################################################################
+# !
+# ! Configuration file for
+# ! Alacritty, the GPU enhanced terminal emulator
+# !
+# ! version       >= 0.10.0-dev
+# !
+#####################################################################
+
+# ? Import additional configuration files
+#
+# Imports are loaded in order, skipping all missing files, with the importing
+# file being loaded last. If a field is already present in a previous import, it
+# will be replaced.
+#
+# All imports must either be absolute paths starting with `/`, or paths relative
+# to the user's home directory starting with `~/`.
+
+import:
+  - ~/.config/alacritty/10-general.yml
+  - ~/.config/alacritty/20-font.yml
+  - ~/.config/alacritty/30-colors.yml
+  - ~/.config/alacritty/40-bindings.yml
