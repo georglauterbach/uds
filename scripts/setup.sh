@@ -1,8 +1,8 @@
 #! /bin/bash
 
-# version        0.3.0
-# executed by    start.sh or manually
-# task           UDS main installation script
+# version        0.3.1
+# executed by    manually
+# task           UDS installation script
 
 # shellcheck source=/dev/null
 source <(curl -qsSfL https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh)
@@ -28,7 +28,7 @@ export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
 # shellcheck disable=SC2034
-LOG_LEVEL=${LOG_LEVEL:-deb}
+LOG_LEVEL=${LOG_LEVEL:-inf}
 SCRIPT='UDS setup'
 GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/dev/files/'
 
@@ -72,8 +72,6 @@ function add_ppas
   curl -qsSfL -o /etc/apt/sources.list.d/uds.list "${GITHUB_RAW_URL}apt/uds.list"
 
   declare -a GPG_KEY_FILES
-
-  GITHUB_URL='https://github.com/georglauterbach/uds/raw/dev/files/apt/gpg/'
   GPG_KEY_FILES=(
     alacritty
     cryptomator
@@ -90,7 +88,8 @@ function add_ppas
   for GPG_FILE in "${GPG_KEY_FILES[@]}"
   do
     curl -qsSfL \
-      -o "/etc/apt/trusted.gpg.d/${GPG_FILE}.gpg" "${GITHUB_URL}${GPG_FILE}.gpg"
+      -o "/etc/apt/trusted.gpg.d/${GPG_FILE}.gpg" \
+      "https://github.com/georglauterbach/uds/raw/dev/files/apt/gpg/${GPG_FILE}.gpg"
   done
 
   log 'deb' 'Finished adding PPAs'
@@ -179,33 +178,31 @@ function place_configuration_files
     return 1
   fi
   
-  local GITHUB_URL
   declare -a CONFIG_FILES
+  CONFIG_FILES=(
+    '.bashrc'
+    '.config/bash/10-setup.sh'
+    '.config/bash/80-aliases.sh'
+    '.config/bash/90-wrapper.sh'
+    '.config/bash/starship.toml'
+    '.config/nvim/init.lua'
+    '.config/nvim/lua/10-plugins.lua'
+    '.config/nvim/lua/60-line.lua'
+    '.config/alacritty/alacritty.yml'
+    '.config/alacritty/10-general.yml'
+    '.config/alacritty/20-font.yml'
+    '.config/alacritty/30-colors.yml'
+    '.config/alacritty/40-bindings.yml'
+  )
 
-  CONFIG_FILES+=('.bashrc')
-  CONFIG_FILES+=('.config/bash/10-setup.sh')
-  CONFIG_FILES+=('.config/bash/80-aliases.sh')
-  CONFIG_FILES+=('.config/bash/90-wrapper.sh')
-  CONFIG_FILES+=('.config/bash/starship.toml')
-
-  CONFIG_FILES+=('.config/nvim/init.lua')
-  CONFIG_FILES+=('.config/nvim/lua/10-plugins.lua')
-  CONFIG_FILES+=('.config/nvim/lua/60-line.lua')
-
-  CONFIG_FILES+=('.config/alacritty/alacritty.yml')
-  CONFIG_FILES+=('.config/alacritty/10-general.yml')
-  CONFIG_FILES+=('.config/alacritty/20-font.yml')
-  CONFIG_FILES+=('.config/alacritty/30-colors.yml')
-  CONFIG_FILES+=('.config/alacritty/40-bindings.yml')
-
-  # CONFIG_FILES+=('.config/regolith/Xresources')
-  # CONFIG_FILES+=('.config/regolith/wallpaper.jpg')
-  # CONFIG_FILES+=('.config/regolith/i3/config')
-  # CONFIG_FILES+=('.config/regolith/picom/config')
-  # CONFIG_FILES+=('.config/regolith/i3xrocks/conf.d/01_setup')
-  # CONFIG_FILES+=('.config/regolith/i3xrocks/conf.d/80_battery')
-  # CONFIG_FILES+=('.config/regolith/i3xrocks/conf.d/80_rofication')
-  # CONFIG_FILES+=('.config/regolith/i3xrocks/conf.d/90_time')
+  # '.config/regolith/Xresources'
+  # '.config/regolith/wallpaper.jpg'
+  # '.config/regolith/i3/config'
+  # '.config/regolith/picom/config'
+  # '.config/regolith/i3xrocks/conf.d/01_setup'
+  # '.config/regolith/i3xrocks/conf.d/80_battery'
+  # '.config/regolith/i3xrocks/conf.d/80_rofication'
+  # '.config/regolith/i3xrocks/conf.d/90_time'
 
   mkdir -p \
     "${HOME}/.config/alacritty" \
@@ -234,7 +231,7 @@ function main
   log 'war' \
     'Remember to start this script with sudo' \
     '--preserve-env=USER,HOME - press CTRL-C to abort now'
-  sleep 7
+  sleep 10
 
   purge_snapd
   add_ppas

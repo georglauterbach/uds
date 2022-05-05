@@ -2,12 +2,10 @@
 
 ## About
 
-_UDS_ is a Ubuntu \[GNU/Linux\] desktop setup application to configure
+_UDS_ is a Ubuntu \[GNU/Linux\] desktop setup application to
 
-1. the desktop theme and style
-2. miscellaneous configuration files
-
-## Architecture
+1. configure the desktop theme and style
+2. setup miscellaneous configuration files
 
 _UDS_ configures [Ubuntu 22.04 LTS]. It installs various packages and places (new) configuration files. The desktop theme is based upon [Regolith Linux] 2.0, which combines the [GNOME] desktop environment and [i3]\(-gaps\).
 
@@ -27,7 +25,7 @@ $ reboot
 
 ## What _UDS_ Does
 
-After the initial acquisition of all resources, the execution of the `uds` binary does the following:
+The `setup.sh` script does the following:
 
 1. Complete removal of `snapd`
 2. Setup of Personal Package Archives (PPAs)
