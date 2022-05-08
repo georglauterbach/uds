@@ -71,7 +71,8 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/owncloud.gpg] https://download
 #
 #############################################################################
 
-# deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/regolith.gpg] https://regolith-release-ubuntu-jammy-amd64.s3.amazonaws.com jammy main
+# TODO change `testing` to `stable` once Regolith 2.0 is released
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/regolith.gpg] https://regolith-testing-ubuntu-jammy-amd64.s3.amazonaws.com jammy main
 
 #############################################################################
 #

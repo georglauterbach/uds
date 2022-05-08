@@ -11,7 +11,7 @@ gtk.theme_name: Yaru-red-dark
 gtk.icon_theme_name: Yaru-red-dark
 gtk.font_name: Ubuntu Regular 10
 gtk.document_font_name: Ubuntu Regular 10
-gtk.monospace_font_name: Ubuntu Regular 10
+gtk.monospace_font_name: Ubuntu Mono Regular 10
 
 ! * Wallpaper
 
@@ -54,8 +54,8 @@ i3-wm.binding.code: c
 
 ! * Auto-start applications
 
-i3-wm.program.1: ~/.config/polybar/launch.sh
-i3-wm.program.2: /usr/bin/nm-applet
+i3-wm.program.1: /usr/bin/nm-applet
+i3-wm.program.2: ~/.config/polybar/launch.sh
 
 ! * Workspaces
 
