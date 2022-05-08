@@ -115,6 +115,8 @@ function install_packages
     'firefox'
     'fonts-firacode'
     'fonts-font-awesome'
+    'fonts-nerd-font-firacode'
+    'fonts-nerd-font-firamono'
     'gcc'
     'gnome-calculator'
     'gnome-terminal'
@@ -160,6 +162,10 @@ function install_packages
     fi
   done
 
+  log 'deb' "Removing not needed / wanted packages now"
+  apt remove --yes --assume-yes \
+    regolith-i3xrocks-config regolith-i3-ftue i3xrocks
+
   log 'deb' 'Installing Starship prompt'
   sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force >/dev/null
 
@@ -193,26 +199,18 @@ function place_configuration_files
     '.config/alacritty/20-font.yml'
     '.config/alacritty/30-colors.yml'
     '.config/alacritty/40-bindings.yml'
+    '.config/regolith2/i3/config.d/98-bindings'
+    '.config/regolith2/i3/config.d/99-workspaces'
+    '.config/regolith2/picom.conf'
+    '.config/regolith2/wallpaper.jpg'
+    '.config/regolith2/Xresources'
   )
-
-  # '.config/regolith/Xresources'
-  # '.config/regolith/wallpaper.jpg'
-  # '.config/regolith/i3/config'
-  # '.config/regolith/picom/config'
-  # '.config/regolith/i3xrocks/conf.d/01_setup'
-  # '.config/regolith/i3xrocks/conf.d/80_battery'
-  # '.config/regolith/i3xrocks/conf.d/80_rofication'
-  # '.config/regolith/i3xrocks/conf.d/90_time'
 
   mkdir -p \
     "${HOME}/.config/alacritty" \
     "${HOME}/.config/bash" \
     "${HOME}/.config/nvim/lua"
-  
-  # mkdir -p \
-    # "${HOME}/.config/regolith/i3" \
-    # "${HOME}/.config/regolith/picom" \
-    # "${HOME}/.config/regolith/i3xrocks/conf.d"
+    "${HOME}/.config/regolith2/i3/config.d"
 
   for FILE in "${CONFIG_FILES[@]}"
   do
