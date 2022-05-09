@@ -122,7 +122,7 @@ function install_packages
     'gnome-terminal'
     'gnome-tweaks'
     'gnupg2'
-    "linux-generic-hwe-22.04"
+    'linux-generic-hwe-22.04'
     'make'
     'nautilus'
     'neofetch'

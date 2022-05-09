@@ -54,7 +54,7 @@ i3-wm.binding.code: c
 
 ! * Auto-start applications
 
-i3-wm.program.1: /usr/bin/nm-applet
+i3-wm.program.1: nm-applet &
 i3-wm.program.2: ~/.config/polybar/launch.sh
 
 ! * Workspaces
