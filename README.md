@@ -20,7 +20,8 @@ $ wget https://raw.githubusercontent.com/georglauterbach/uds/dev/scripts/setup.s
 $ sudo --preserve-env=HOME,USER,LOG_LEVEL bash ./setup.sh
 ...
 
-$ reboot
+$ reboot # and choose Regolith as the new DE
+$ regolith-look set gruvbox
 ```
 
 ## What _UDS_ Does

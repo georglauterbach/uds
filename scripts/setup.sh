@@ -132,6 +132,8 @@ function install_packages
     'polybar'
     'python3-dev'
     'python3-pynvim'
+    'regolith-desktop'
+    'regolith-look-gruvbox'
     'seahorse'
     'thunderbird'
     'thunderbird-gnome-support'
@@ -141,9 +143,6 @@ function install_packages
     'yaru-theme-sound'
     'texlive-full'
   )
-
-  # 'regolith-desktop-standard'
-  # 'regolith-look-gruvbox'
 
   for PACKAGE in "${PACKAGES[@]}"
   do
@@ -156,14 +155,14 @@ function install_packages
 
     log 'deb' "Installing package '${PACKAGE}' now"
 
-    if ! apt-get -qq install "${PACKAGE}"
+    if ! apt-get install -qq "${PACKAGE}"
     then
       log 'war' "Package '${PACKAGE}' could not be installed"
     fi
   done
 
   log 'deb' "Removing not needed / wanted packages now"
-  apt remove --yes --assume-yes \
+  apt remove --yes --assume-yes -qq \
     regolith-i3xrocks-config regolith-i3-ftue i3xrocks
 
   log 'deb' 'Installing Starship prompt'
@@ -199,6 +198,8 @@ function place_configuration_files
     '.config/alacritty/20-font.yml'
     '.config/alacritty/30-colors.yml'
     '.config/alacritty/40-bindings.yml'
+    '.config/polybar/launch.sh'
+    '.config/polybar/polybar.conf'
     '.config/regolith2/i3/config.d/98-bindings'
     '.config/regolith2/i3/config.d/99-workspaces'
     '.config/regolith2/picom.conf'
@@ -209,7 +210,7 @@ function place_configuration_files
   mkdir -p \
     "${HOME}/.config/alacritty" \
     "${HOME}/.config/bash" \
-    "${HOME}/.config/nvim/lua"
+    "${HOME}/.config/nvim/lua" \
     "${HOME}/.config/regolith2/i3/config.d"
 
   for FILE in "${CONFIG_FILES[@]}"
