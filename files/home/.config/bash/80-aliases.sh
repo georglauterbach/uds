@@ -9,6 +9,7 @@ alias ll='lsa'
 alias lsa='ls -a'
 alias less='less -R'
 alias k='kubectl'
+alias copy='xclip -selection clipboard -in'
 
 alias g='gitui'
 alias gb='git branch'
