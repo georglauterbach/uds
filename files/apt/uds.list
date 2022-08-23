@@ -57,15 +57,6 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/neovim-unstable.gpg] http://pp
 
 #############################################################################
 #
-# ownCloud
-# https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/download/
-#
-#############################################################################
-
-deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/owncloud.gpg] https://download.owncloud.com/desktop/ownCloud/stable/latest/linux/Ubuntu_21.10/ /
-
-#############################################################################
-#
 # Regolith Linux
 # https://github.com/regolith-linux/voulage
 #
