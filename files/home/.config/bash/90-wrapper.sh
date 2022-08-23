@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# version       0.1.0
+# version       0.1.1
 # sourced by    ${HOME}/.bashrc
 # task          provides helper and wrapper functions
 #               for common tasks and commands
@@ -161,25 +161,3 @@ function update
 
   sudo -E bash -c "$(declare -f log_info log_error __update) ; __update"
 )
-
-function set-theme
-{
-  case "${1:-}" in
-    ( 'l' | 'light' )
-      sed -i -E 's/(wallpaper)_dark\.(jpg)/\1.\2/' "${HOME}/.config/regolith2/Xresources"
-      sed -i -E 's/(Yaru-.+)-dark/\1/g' "${HOME}/.config/regolith2/Xresources"
-      regolith-look refresh
-      ;;
-
-    ( 'd' | 'dark' )
-      sed -i -E 's/(wallpaper)\.(jpg)/\1_dark.\2/' "${HOME}/.config/regolith2/Xresources"
-      sed -i -E 's/(Yaru-.+)/\1-dark/g' "${HOME}/.config/regolith2/Xresources"
-      regolith-look refresh
-      ;;
-
-    ( * )
-      printf "error: unknown argument '%s' - use 'light' or 'dark'\n" "${1:-}" >&2
-      return 1
-      ;;
-  esac
-}
