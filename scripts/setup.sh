@@ -112,6 +112,7 @@ function install_packages
     'cups'
     'eog'
     'evince'
+    'exa'
     'firefox'
     'fonts-firacode'
     'fonts-font-awesome'

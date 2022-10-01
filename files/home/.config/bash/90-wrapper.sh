@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# version       0.1.1
+# version       0.1.2
 # sourced by    ${HOME}/.bashrc
 # task          provides helper and wrapper functions
 #               for common tasks and commands
@@ -37,7 +37,10 @@ function ls
 {
   if command_exists exa
   then
-    exa -bhlg --git --group-directories-first "${@}"
+    exa                \
+      --long --binary  \
+      --header --group \
+      --classify --group-directories-first "${@}"
   else
     execute_real_command ls "${@}"
   fi
