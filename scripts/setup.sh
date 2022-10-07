@@ -147,6 +147,7 @@ function install_packages
     'neovim'
     'owncloud-client'
     'p7zip-full'
+    'picom'
     'pkg-config'
     'polybar'
     'python3-dev'
