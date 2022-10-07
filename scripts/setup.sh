@@ -105,6 +105,15 @@ function install_packages
 {
   log 'inf' 'Installing packages'
 
+  log 'deb' 'Applying VS Code patch'
+  apt-get -qq install code
+  local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
+  if [[ -e ${CODE_SOURCES_FILE} ]]
+  then
+    sed -i '$ d' "${CODE_SOURCES_FILE}"
+    echo '#deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >"${CODE_SOURCES_FILE}"
+  fi
+
   declare -a PACKAGES
   PACKAGES=(
     'alacritty'
@@ -129,6 +138,7 @@ function install_packages
     'gnome-tweaks'
     'gnupg2'
     'htop'
+    'libclang-dev'
     'libssl-dev'
     'linux-generic-hwe-22.04'
     'make'
