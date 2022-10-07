@@ -77,8 +77,7 @@ function add_ppas
     cryptomator
     git-core
     mozillateam
-    neovim-unstable
-    owncloud
+    neovim-stable
     regolith
     vscode
     zerotier
@@ -93,8 +92,13 @@ function add_ppas
   done
 
   log 'deb' 'Finished adding PPAs'
+
+  log 'deb' 'Overriding Firefox PPA priority to not use the Snap-package'
+  curl -sSfL -o /etc/apt/preferences.d/mozillateamppa "${GITHUB_RAW_URL}apt/preferences/mozillateamppa"
+
   log 'deb' 'Updating package signatures'
   apt-get -qq update
+
 }
 
 function install_packages
@@ -119,10 +123,13 @@ function install_packages
     'fonts-nerd-font-firacode'
     'fonts-nerd-font-firamono'
     'gcc'
+    'git'
     'gnome-calculator'
     'gnome-terminal'
     'gnome-tweaks'
     'gnupg2'
+    'htop'
+    'libssl-dev'
     'linux-generic-hwe-22.04'
     'make'
     'nautilus'
@@ -130,6 +137,7 @@ function install_packages
     'neovim'
     'owncloud-client'
     'p7zip-full'
+    'pkg-config'
     'polybar'
     'python3-dev'
     'python3-pynvim'
@@ -212,11 +220,12 @@ function place_configuration_files
     "${HOME}/.config/alacritty" \
     "${HOME}/.config/bash" \
     "${HOME}/.config/nvim/lua" \
+    "${HOME}/.config/polybar" \
     "${HOME}/.config/regolith2/i3/config.d"
 
   for FILE in "${CONFIG_FILES[@]}"
   do
-    curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
+    curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}files/home/${FILE}"
   done
   
   chown "${USER}:${USER}" "${HOME}/.bashrc"
