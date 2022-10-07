@@ -240,6 +240,7 @@ function place_configuration_files
   
   chown "${USER}:${USER}" "${HOME}/.bashrc"
   chown -R "${USER}:${USER}" "${HOME}/.config"
+  chmod +x "${HOME}/.config/polybar/launch.sh"
 
   log 'deb' 'Finished placing configuration files'
 }
