@@ -4,6 +4,8 @@
 # executed by   just or manually
 # task          lints the codebase against various linters
 
+set -eE -u -o pipefail
+
 # shellcheck source=scripts/libbash/load
 source "$(dirname "${BASH_SOURCE[0]}")/libbash/load" 'errors' 'log' 'cri'
 SCRIPT='linting@bash'
@@ -136,7 +138,7 @@ EOM
 
 function main
 {
-  setup_container_runtime
+  setup_container_runtime || exit ${?}
   local ERROR_OCCURRED=false
 
   log 'inf' 'Starting the linting process'
@@ -182,4 +184,4 @@ function main
   fi
 }
 
-main "${@}" || exit ${?}
+main "${@}"

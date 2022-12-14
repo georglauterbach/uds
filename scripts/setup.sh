@@ -154,36 +154,28 @@ function install_packages
     'python3-pynvim'
     'regolith-desktop'
     'regolith-look-gruvbox'
+    'ripgrep'
     'seahorse'
-    'thunderbird'
-    'thunderbird-gnome-support'
     'xsel'
     'xz-utils'
     'yaru-theme-icon'
     'yaru-theme-sound'
     'texlive-full'
   )
+  
+  log 'deb' "Installing packages now"
 
-  for PACKAGE in "${PACKAGES[@]}"
-  do
-    if dpkg-query -W --showformat='${Status}' "${PACKAGE}" \
-    |& grep "install ok installed" &>/dev/null
-    then
-      log 'deb' "Package '${PACKAGE}' already installed"
-      continue
-    fi
-
-    log 'deb' "Installing package '${PACKAGE}' now"
-
-    if ! apt-get install -qq "${PACKAGE}"
-    then
-      log 'war' "Package '${PACKAGE}' could not be installed"
-    fi
-  done
+  if ! apt-get install -qq "${PACKAGES[*]}"
+  then
+    log 'err' "Package installation not successful"
+    exit 1
+  fi
 
   log 'deb' "Removing not needed / wanted packages now"
   apt remove --yes --assume-yes -qq \
     regolith-i3xrocks-config regolith-i3-ftue i3xrocks
+
+  apt-get --yes autoremove
 
   log 'deb' 'Installing Starship prompt'
   sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force >/dev/null
@@ -236,7 +228,7 @@ function place_configuration_files
 
   for FILE in "${CONFIG_FILES[@]}"
   do
-    curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}files/home/${FILE}"
+    curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
   done
   
   chown "${USER}:${USER}" "${HOME}/.bashrc"
