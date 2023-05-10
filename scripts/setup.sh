@@ -1,61 +1,40 @@
 #! /bin/bash
 
-# version        0.3.1
-# executed by    manually
-# task           UDS installation script
+trap '__log_unexpected_error "${FUNCNAME[0]:-}" "${BASH_COMMAND:-}" "${LINENO:-}" "${?:-}"' ERR
+set -eE -u -o pipefail
+shopt -s inherit_errexit
+cd /tmp
+
+# shellcheck disable=SC2317
+function __log_unexpected_error() {
+  local MESSAGE="unexpected error occured :: script='${SCRIPT:-${0}}' | function='${1:-none (global)}'"
+  MESSAGE+=" | command='${2:-?}' | line = '${3:-?}' | exit-code=${4:-?}"
+  log 'err' "${MESSAGE}"
+}
 
 # shellcheck source=/dev/null
-source <(curl -qsSfL https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh)
-
-if [[ ! $(type -t log || printf 'none') == 'function' ]]
+if ! source <(curl -qsSfL https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh || :)
 then
-  function log
-  {
-    shift 1 
-    printf "[  LOG  ] %30s | %s" "${SCRIPT}" "${*}"
-  }
+  function log() { echo "[ LOG ] ${1:-}" ; }
 fi
 
 if [[ ${EUID} -ne 0 ]]
 then
-  log 'err' \
-    'Please start this script with' \
-    "'sudo --preserve-env=USER,HOME bash setup.sh'"
+  log 'err' "Please start this script with 'sudo --preserve-env=USER,HOME bash setup.sh'"
   exit 1
 fi
 
+# shellcheck disable=SC2034
+LOG_LEVEL=${LOG_LEVEL:-inf}
+SCRIPT='UDS Setup'
+GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/dev/files/'
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
-# shellcheck disable=SC2034
-LOG_LEVEL=${LOG_LEVEL:-inf}
-SCRIPT='UDS setup'
-GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/dev/files/'
-
-function __log_unexpected_error
-{
-  local MESSAGE='unexpected error occured { '
-  MESSAGE+="script: ${SCRIPT:-${0}}"
-  MESSAGE+=" | function = ${1:-none (global)}"
-  MESSAGE+=" | command = ${2:-?}"
-  MESSAGE+=" | line = ${3:-?}"
-  MESSAGE+=" | exit code = ${4:-?}"
-  MESSAGE+=" }"
-
-  log 'err' "${MESSAGE}"
-  return 0
-}
-
-trap '__log_unexpected_error "${FUNCNAME[0]:-}" "${BASH_COMMAND:-}" "${LINENO:-}" "${?:-}"' ERR
-set -eEu -o pipefail
-shopt -s inherit_errexit
-cd /tmp || exit 1
-
-function purge_snapd
-{
+function purge_snapd() {
   command -v snap &>/dev/null || return 0
-  log 'inf' "Removing 'snapd'"
-  
+  log 'inf' "Purging 'snapd'"
+
   rm -rf /var/cache/snapd/
   apt-get -qq purge snapd gnome-software-plugin-snap
   apt-mark -qq hold snapd
@@ -64,8 +43,7 @@ function purge_snapd
   log 'deb' "Finished purging 'snapd'"
 }
 
-function add_ppas
-{
+function add_ppas() {
   log 'inf' 'Adding PPAs'
 
   curl -qsSfL -o /etc/apt/sources.list "${GITHUB_RAW_URL}apt/sources.list"
@@ -74,13 +52,11 @@ function add_ppas
   declare -a GPG_KEY_FILES
   GPG_KEY_FILES=(
     alacritty
-    cryptomator
     git-core
     mozillateam
     neovim-stable
     regolith
     vscode
-    zerotier
   )
 
   log 'deb' 'Adding GPG files'
@@ -94,26 +70,29 @@ function add_ppas
   log 'deb' 'Finished adding PPAs'
 
   log 'deb' 'Overriding Firefox PPA priority to not use the Snap-package'
-  curl -sSfL -o /etc/apt/preferences.d/mozillateamppa "${GITHUB_RAW_URL}apt/preferences/mozillateamppa"
+  cat >/etc/apt/preferences.d/mozilla-firefox << "EOM"
+Package: *
+Pin: release o=LP-PPA-mozillateam
+Pin-Priority: 1001
+EOM
+  cat >/etc/apt/apt.conf.d/51unattended-upgrades-firefox << "EOM"
+Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
+EOM
 
-  log 'deb' 'Updating package signatures'
+  log 'inf' 'Updating package signatures'
   apt-get -qq update
-
 }
 
-function install_packages
-{
-  log 'inf' 'Installing packages'
-
+function install_packages() {
   log 'deb' 'Applying VS Code patch'
   apt-get -qq install code
   local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
-  if [[ -e ${CODE_SOURCES_FILE} ]]
+  if [[ -f ${CODE_SOURCES_FILE} ]]
   then
-    sed -i '$ d' "${CODE_SOURCES_FILE}"
-    echo '#deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >"${CODE_SOURCES_FILE}"
+    echo '#deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >>"${CODE_SOURCES_FILE}"
   fi
 
+  log 'deb' 'Installing packages now'
   declare -a PACKAGES
   PACKAGES=(
     'alacritty'
@@ -121,8 +100,8 @@ function install_packages
     'build-essential'
     'cmake'
     'code'
-    'cryptomator'
     'cups'
+    'doas'
     'eog'
     'evince'
     'exa'
@@ -150,8 +129,6 @@ function install_packages
     'picom'
     'pkg-config'
     'polybar'
-    'python3-dev'
-    'python3-pynvim'
     'regolith-desktop'
     'regolith-look-gruvbox'
     'ripgrep'
@@ -160,25 +137,21 @@ function install_packages
     'xz-utils'
     'yaru-theme-icon'
     'yaru-theme-sound'
-    'texlive-full'
   )
-  
-  log 'deb' "Installing packages now"
 
-  if ! apt-get install -qq "${PACKAGES[*]}"
+  if ! apt-get install -qq "${PACKAGES[@]}"
   then
-    log 'err' "Package installation not successful"
+    log 'err' 'Package installation was unsuccessful'
     exit 1
   fi
 
-  log 'deb' "Removing not needed / wanted packages now"
-  apt remove --yes --assume-yes -qq \
-    regolith-i3xrocks-config regolith-i3-ftue i3xrocks
-
-  apt-get --yes autoremove
+  log 'deb' 'Removing unwanted packages now'
+  apt-get remove -qq regolith-i3xrocks-config regolith-i3-ftue i3xrocks
+  apt-get -qq autoremove
 
   log 'deb' 'Installing Starship prompt'
-  sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --force >/dev/null
+  curl -qsSfL https://starship.rs/install.sh >install_startship.sh
+  sh install_startship.sh --force >/dev/null
 
   log 'deb' 'Finished installing packages'
 }
@@ -187,15 +160,24 @@ function place_configuration_files
 {
   log 'inf' 'Placing configuration files'
 
+  log 'deb' "Setting up 'doas'"
+  echo "permit persist ${USER}" >/etc/doas.conf
+  chown -c root:root /etc/doas.conf
+  chmod -c 0400 /etc/doas.conf
+  if doas -C /etc/doas.conf
+  then
+    log 'deb' 'doas config looks good'
+  else
+    log 'war' 'doas config has errors - do not use it immediately'
+  fi
+
+  log 'deb' 'Settung of user-specific configuration'
   if ! cd "${HOME}"
   then
-    log 'err' \
-      'Could not change directory to home directory' \
-      'Cannot place configuration files'
-    return 1
+    log 'err' 'Could not change directory to home directory - cannot place configuration files'
+    exit 1
   fi
-  
-  declare -a CONFIG_FILES
+
   CONFIG_FILES=(
     '.bashrc'
     '.config/bash/10-setup.sh'
@@ -219,18 +201,12 @@ function place_configuration_files
     '.config/regolith2/Xresources'
   )
 
-  mkdir -p \
-    "${HOME}/.config/alacritty" \
-    "${HOME}/.config/bash" \
-    "${HOME}/.config/nvim/lua" \
-    "${HOME}/.config/polybar" \
-    "${HOME}/.config/regolith2/i3/config.d"
-
   for FILE in "${CONFIG_FILES[@]}"
   do
+    mkdir -p "$(dirname "${HOME}/${FILE}")"
     curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
   done
-  
+
   chown "${USER}:${USER}" "${HOME}/.bashrc"
   chown -R "${USER}:${USER}" "${HOME}/.config"
   chmod +x "${HOME}/.config/polybar/launch.sh"
@@ -241,12 +217,10 @@ function place_configuration_files
 function main
 {
   log 'inf' 'Starting UDS setup process'
-  log 'war' \
-    'Remember to start this script with sudo' \
-    '--preserve-env=USER,HOME - press CTRL-C to abort now'
-  sleep 10
+  log 'war' "Remember to start this script with 'sudo --preserve-env=USER,HOME' - press CTRL-C to abort now"
+  sleep 5
 
-  purge_snapd
+  #purge_snapd
   add_ppas
   install_packages
   place_configuration_files

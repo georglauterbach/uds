@@ -1,14 +1,13 @@
 #! /bin/bash
 
-# version       0.2.0
+# version       0.3.0
 # sourced by    ${HOME}/.bashrc
 # task          provides Bash's main setup
 
-function setup_variables
-{
+function setup_variables() {
   VISUAL=nvim
   EDITOR="${VISUAL}"
-  
+
   GCC_COLORS='error=01;31:warning=01;35:note=01;36:'
   GCC_COLORS+='caret=01;32:locus=01:quote=01'
 
@@ -28,8 +27,7 @@ function setup_variables
   export HISTCONTROL HISTSIZE HISTFILESIZE
 }
 
-function setup_completion
-{
+function setup_completion() {
   if ! shopt -oq posix
   then
     if [[ -f /usr/share/bash-completion/bash_completion ]]
@@ -41,36 +39,36 @@ function setup_completion
       # shellcheck source=/dev/null
       source /etc/bash_completion
     fi
+
+    command -v doas &>/dev/null && complete -cf doas
   fi
 }
 
-function setup_miscellaneous
-{
+function setup_miscellaneous() {
   # set specific shell options
   shopt -s histappend checkwinsize globstar autocd
 
   # more friendly less for non-text input files
   local LP=/usr/bin/lesspipe
-  [[ -x ${LP} ]] && eval "$(SHELL=/bin/sh ${LP})"
+  [[ -x ${LP} ]] && eval "$(SHELL=/bin/sh ${LP} || :)"
 
   # set colors for the `ls` command
   if  [[ ! -x /usr/bin/dircolors ]]   \
   ||  [[ ! -r "${HOME}/.dircolors" ]] \
-  ||  ! eval "$(dircolors -b "${HOME}/.dircolors")"
+  ||  ! eval "$(dircolors -b "${HOME}/.dircolors" || :)"
   then
-    eval "$(dircolors -b)"
+    eval "$(dircolors -b || :)"
   fi
 }
 
-function setup_prompt
-{
+function setup_prompt() {
   export PROMPT_DIRTRIM=4
 
   # continuation shell prompt
   PS2='              > '
   # `set -x` tracing prompt
   PS4='[TRACE] > '
-  
+
   command -v starship &>/dev/null && return 0
 
   if [[ -z ${debian_chroot:-} ]] && [[ -r /etc/debian_chroot ]]
