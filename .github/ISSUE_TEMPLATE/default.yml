@@ -1,0 +1,25 @@
+---
+name: Issue
+description: A generic issue
+
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Issue Type
+      description: Please specify what this issue is about
+      multiple: false
+      options:
+        - Bug Report
+        - Feature Request
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Please describe your issue/problem/etc.
+      render: Markdown
+    validations:
+      required: true

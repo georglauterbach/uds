@@ -1,56 +1,32 @@
 # Ubuntu Desktop Setup (UDS)
 
-## About
+## :page_with_curl: About
 
-_UDS_ is a Ubuntu \[GNU/Linux\] desktop setup application to
-
-1. configure the desktop theme and style
-2. setup miscellaneous configuration files
-
-_UDS_ configures [Ubuntu 22.04 LTS]. It installs various packages and places (new) configuration files. The desktop theme is based upon [Regolith Linux] 2.0, which combines the [GNOME] desktop environment and [i3]\(-gaps\).
+A simple setup script to configure the desktop theme and style & setup miscellaneous configuration files. UDS configures [_Ubuntu_ 23.04 _Lunar Lobster_][ubuntu-23.04]. It installs various packages and places (new) configuration files. The desktop theme is based upon [_Regolith Linux_][regolith-github] 2.0, which combines the [GNOME] desktop environment and [i3].
 
 ![Desktop](files/images/desktop.png)
 
-## Usage
+The script will
 
-We assume Ubuntu has already been installed - there are no special requirements or dependencies other than the packages shown in the first command below. The installation script can be downloaded and executed in the terminal. The first command will clone the repository and acquire the binary for installation. Make sure to execute the first command in the directory you want _UDS_'s files to be placed in.
+1. (optionally) completely remove `snapd`;
+2. (for the next step) setup Personal Package Archives (PPAs);
+3. install basic packages;
+4. place appropriate configuration files.
 
-``` CONSOLE
-$ wget https://raw.githubusercontent.com/georglauterbach/uds/dev/scripts/setup.sh
-$ sudo --preserve-env=HOME,USER,LOG_LEVEL bash ./setup.sh
-...
-
-$ reboot # and choose Regolith as the new DE
-$ regolith-look set gruvbox
-```
-
-## What _UDS_ Does
-
-The `setup.sh` script does the following:
-
-1. Complete removal of `snapd`
-2. Setup of Personal Package Archives (PPAs)
-3. Installation of packages
-4. Placing configuration files
-
-## Development
-
-Fork the repository, and clone it by running the following command
-
-``` CONSOLE
-$ git clone --recurse-submodules https://github.com/<YOUR GIT ACCOUNT NAME>/uds.git
-...
-```
-
-## Licensing
-
-This project is licensed under the [GNU General Public License v3], except for those parts (lines of code from libraries used in this project) already licensed under other licenses.
-
-[//]: # (Links)
-
-[Ubuntu 22.04 LTS]: https://releases.ubuntu.com/22.04/
-[Regolith Linux]: https://github.com/regolith-linux/
+[ubuntu-23.04]: https://releases.ubuntu.com/23.04/
+[regolith-github]: https://github.com/regolith-linux/
 [GNOME]: https://www.gnome.org/
 [i3]: https://i3wm.org/
 
-[GNU General Public License v3]: https://www.gnu.org/licenses/gpl-3.0.txt
+## :rocket: Usage
+
+We assume Ubuntu has already been installed - there are no special requirements or dependencies. The installation script can be downloaded and executed in the terminal. After downloading the script via `wget`, you may optionally enable the `purge_snapd` function by uncommenting it in the `main` function at the very bottom.
+
+```console
+$ wget https://raw.githubusercontent.com/georglauterbach/uds/main/setup.sh
+$ sudo --preserve-env=HOME,USER,LOG_LEVEL bash ./setup.sh
+...
+
+$ reboot
+$ regolith-look set gruvbox
+```

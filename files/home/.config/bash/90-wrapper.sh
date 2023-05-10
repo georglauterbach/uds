@@ -1,15 +1,12 @@
 #! /bin/bash
 
-# version       0.1.0
+# version       0.1.2
 # sourced by    ${HOME}/.bashrc
 # task          provides helper and wrapper functions
 #               for common tasks and commands
 
-function execute_real_command
-{
-  local DIR FULL_COMMAND
-  declare -a PATHS
-
+function execute_real_command() {
+  local DIR FULL_COMMAND PATHS
   readarray -d ':' PATHS <<< "${PATH}"
 
   for DIR in "${PATHS[@]}"
@@ -24,41 +21,33 @@ function execute_real_command
     fi
   done
 
-  log_error "Command '%s' not found\n" "${1:-}" >&2
+  echo "Command '${1:-}' not found" >&2
   return 1
 }
 
-function command_exists
-{
+function command_exists() {
   command -v "${1:-}" &>/dev/null
 }
 
-function ls
-{
+function ls() {
   if command_exists exa
   then
-    exa -bhlg --git --group-directories-first "${@}"
+    exa --long --binary --header --group --classify --group-directories-first "${@}"
   else
     execute_real_command ls "${@}"
   fi
 }
 
-function cat
-{
+function cat() {
   if command_exists batcat
   then
-    batcat \
-      --theme="Monokai Extended Origin" \
-      --paging=never \
-      --italic-text=always \
-      "${@}"
+    batcat --theme="Monokai Extended Origin" --paging=never --italic-text=always "${@}"
   else
     execute_real_command cat "${@}"
   fi
 }
 
-function grep
-{
+function grep() {
   if command_exists rg
   then
     rg -N "${@}"
@@ -82,7 +71,7 @@ function shutn { shutdown now ; }
 function x
 {
   [[ -f ${1:-} ]] || { printf "File '%s' not found" "${1}" >&2 ; return 1 ; }
-  
+
   case "${1}" in
     ( *.7z )      7za x "${1}"       ;;
     ( *.ace )     unace e "${1}"     ;;
@@ -109,55 +98,35 @@ function x
   return ${?}
 }
 
-function update
-(
-  function log_info
-  {
-    echo -e "$(date +'%H:%M:%S')  \e[34mINFO\e[0m  ${*}"
-  }
+function update() {
+  # shellcheck disable=SC2317
+  function __update() {
+    local QUIET OPTIONS
+    QUIET='-qq'
+    OPTIONS=('--yes' '--assume-yes' '--allow-unauthenticated' '--allow-change-held-packages')
 
-  function log_error
-  {
-    echo -e "$(date +'%H:%M:%S')  \e[31mERROR\e[0m  ${*}" >&2
-  }
-
-  function __update
-  {
-    local QUIET='-qq'
-    declare -a OPTIONS
-
-    OPTIONS=(
-      --yes
-      --assume-yes
-      --allow-unauthenticated
-      --allow-change-held-packages
-    )
-
-    log_info 'Checking for package updates'
-
+    echo 'Checking for package updates'
     if ! apt-get "${QUIET}" update
     then
-      log_error "Could not update package signatures [${?}]"
+      echo "Could not update package signatures [${?}]" >&2
       return 1
     fi
 
-    log_info 'Installing package updates'
-
+    echo 'Installing package updates'
     if ! apt-get --with-new-pkgs "${QUIET}" "${OPTIONS[@]}" upgrade
     then
-      log_error "Could not upgrade packages [${?}]"
+      log_error "Could not upgrade packages [${?}]" >&2
       return 1
     fi
 
-    log_info 'Removing orphaned packages'
-
+    echo 'Removing orphaned packages'
     if ! apt-get "${QUIET}" "${OPTIONS[@]}" autoremove
     then
-      log_error "Could not automatically remove unneeded packages [${?}]"
+      echo "Could not automatically remove unneeded packages [${?}]" >&2
     fi
 
-    log_info 'Successfully updated the system'
+    echo 'Successfully updated the system'
   }
 
-  sudo -E bash -c "$(declare -f log_info log_error __update) ; __update"
-)
+  sudo -E bash -c "$(declare -f __update) ; __update"
+}

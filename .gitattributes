@@ -11,6 +11,7 @@
 # -----------------------------------------------
 
 *        text=auto
+*.sh     text    diff=bash
 
 *.png   -text
 *.ico   -text
