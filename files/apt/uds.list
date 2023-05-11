@@ -30,15 +30,6 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/alacritty.gpg] http://ppa.laun
 
 #############################################################################
 #
-# Cryptomator
-# https://launchpad.net/~sebastian-stenzel/+archive/ubuntu/cryptomator
-#
-#############################################################################
-
-deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/cryptomator.gpg] http://ppa.launchpad.net/sebastian-stenzel/cryptomator/ubuntu/ jammy main
-
-#############################################################################
-#
 # GIT
 # https://launchpad.net/~git-core/+archive/ubuntu/ppa
 #
@@ -72,12 +63,3 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/regolith.gpg] https://regolith
 #############################################################################
 
 deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/vscode.gpg] https://packages.microsoft.com/repos/code stable main
-
-#############################################################################
-#
-# ZeroTier
-# https://www.zerotier.com/download/
-#
-#############################################################################
-
-deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/zerotier.gpg] http://download.zerotier.com/debian/jammy jammy main

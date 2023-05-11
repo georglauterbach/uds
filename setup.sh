@@ -49,6 +49,12 @@ function add_ppas() {
   curl -qsSfL -o /etc/apt/sources.list "${GITHUB_RAW_URL}apt/sources.list"
   curl -qsSfL -o /etc/apt/sources.list.d/uds.list "${GITHUB_RAW_URL}apt/uds.list"
 
+  if [[ $(uname -m || :) != 'x86_64' ]]
+  then
+    log 'deb' 'Fixing sources for ARM64'
+    sed -i -E 's|(arch=)amd64|\1arm64|g' /etc/apt/sources.list /etc/apt/sources.list.d/uds.list
+  fi
+
   declare -a GPG_KEY_FILES
   GPG_KEY_FILES=(
     alacritty
