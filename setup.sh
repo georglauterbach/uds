@@ -7,7 +7,7 @@ cd /tmp
 
 # shellcheck disable=SC2317
 function __log_unexpected_error() {
-  local MESSAGE="unexpected error occured :: script='${SCRIPT:-${0}}' | function='${1:-none (global)}'"
+  local MESSAGE="unexpected error occurred :: script='${SCRIPT:-${0}}' | function='${1:-none (global)}'"
   MESSAGE+=" | command='${2:-?}' | line = '${3:-?}' | exit-code=${4:-?}"
   log 'err' "${MESSAGE}"
 }
