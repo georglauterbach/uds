@@ -40,7 +40,11 @@ function setup_completion() {
       source /etc/bash_completion
     fi
 
-    command -v doas &>/dev/null && complete -cf doas
+    if command -v doas &>/dev/null
+    then
+      complete -cf doas
+      alias sudo='doas'
+    fi
   fi
 }
 

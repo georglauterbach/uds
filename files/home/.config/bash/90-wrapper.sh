@@ -1,11 +1,11 @@
 #! /bin/bash
 
-# version       0.1.2
+# version       0.1.3
 # sourced by    ${HOME}/.bashrc
 # task          provides helper and wrapper functions
 #               for common tasks and commands
 
-function execute_real_command() {
+function __execute_real_command() {
   local DIR FULL_COMMAND PATHS
   readarray -d ':' PATHS <<< "${PATH}"
 
@@ -25,43 +25,63 @@ function execute_real_command() {
   return 1
 }
 
-function command_exists() {
+function __command_exists() {
   command -v "${1:-}" &>/dev/null
 }
 
+function __do_as_root() {
+  if __command_exists doas
+  then
+    doas "${@}"
+  elif __command_exists sudo
+  then
+    sudo "${@}"
+  else
+    echo 'Could not find program to execute command as root'
+  fi
+}
+
 function ls() {
-  if command_exists exa
+  if __command_exists exa
   then
     exa --long --binary --header --group --classify --group-directories-first "${@}"
   else
-    execute_real_command ls "${@}"
+    __execute_real_command ls "${@}"
   fi
 }
 
 function cat() {
-  if command_exists batcat
+  if __command_exists batcat
   then
     batcat --theme="Monokai Extended Origin" --paging=never --italic-text=always "${@}"
   else
-    execute_real_command cat "${@}"
+    __execute_real_command cat "${@}"
   fi
 }
 
 function grep() {
-  if command_exists rg
+  if __command_exists rg
   then
     rg -N "${@}"
   else
-    execute_real_command grep "${@}"
+    __execute_real_command grep "${@}"
   fi
 }
 
-function git
-{
+function git() {
   case "${1:-}" in
-    ( 'update' ) gf ; gp ;;
-    ( * ) execute_real_command git "${@}" ;;
+    ( 'update' ) git fetch --all --tags --prune ; git pull ;;
+    ( * ) __execute_real_command git "${@}" ;;
   esac
+}
+
+function apt() {
+  if __command_exists nala
+  then
+    nala "${@}"
+  else
+    __execute_real_command apt "${@}"
+  fi
 }
 
 function shutn { shutdown now ; }
@@ -101,32 +121,39 @@ function x
 function update() {
   # shellcheck disable=SC2317
   function __update() {
-    local QUIET OPTIONS
+    local QUIET OPTIONS LOG_FILE
     QUIET='-qq'
     OPTIONS=('--yes' '--assume-yes' '--allow-unauthenticated' '--allow-change-held-packages')
+    LOG_FILE=$(mktemp)
 
-    echo 'Checking for package updates'
-    if ! apt-get "${QUIET}" update
+    echo -n '  -> Checking for package updates... '
+    if ! apt-get "${QUIET}" update &>"${LOG_FILE}"
     then
-      echo "Could not update package signatures [${?}]" >&2
+      echo "could not update package signatures [ERROR]" >&2
+      cat "${LOG_FILE}"
       return 1
     fi
 
-    echo 'Installing package updates'
-    if ! apt-get --with-new-pkgs "${QUIET}" "${OPTIONS[@]}" upgrade
+    echo -ne 'done\n  -> Installing package updates... '
+    if ! apt-get --with-new-pkgs "${QUIET}" "${OPTIONS[@]}" upgrad &>"${LOG_FILE}"
     then
-      log_error "Could not upgrade packages [${?}]" >&2
+      echo "could not upgrade packages [ERROR]" >&2
+      cat "${LOG_FILE}"
       return 1
     fi
 
-    echo 'Removing orphaned packages'
-    if ! apt-get "${QUIET}" "${OPTIONS[@]}" autoremove
+    echo -ne 'done\n  -> Removing orphaned packages... '
+    if ! apt-get "${QUIET}" "${OPTIONS[@]}" autoremove &>"${LOG_FILE}"
     then
-      echo "Could not automatically remove unneeded packages [${?}]" >&2
+      echo "could not automatically remove orphaned packages [ERROR]" >&2
+      cat "${LOG_FILE}"
+    else
+      echo -e 'done'
     fi
 
-    echo 'Successfully updated the system'
+    echo -e '  -> Successfully updated the system'
+    rm "${LOG_FILE}"
   }
 
-  sudo -E bash -c "$(declare -f __update) ; __update"
+  __do_as_root bash -c "$(declare -f __update) ; __update"
 }
