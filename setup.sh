@@ -18,12 +18,6 @@ then
   function log() { echo "[ LOG ] ${1:-}" ; }
 fi
 
-if [[ ${EUID} -ne 0 ]]
-then
-  log 'err' "Please start this script with 'sudo --preserve-env=USER,HOME bash setup.sh'"
-  exit 1
-fi
-
 # shellcheck disable=SC2034
 LOG_LEVEL=${LOG_LEVEL:-inf}
 SCRIPT='UDS Setup'
@@ -222,15 +216,22 @@ function place_configuration_files
 
 function main
 {
-  log 'inf' 'Starting UDS setup process'
-  log 'war' "Remember to start this script with 'sudo --preserve-env=USER,HOME' - press CTRL-C to abort now"
-  sleep 5
+  if [[ ${EUID} -ne 0 ]]
+  then
+    log 'deb' 'Running user-specific setup'
+    gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
 
+    log 'deb' 'Starting actual setup user-specific setup'
+    # shellcheck disable=SC2312
+    sudo env - USER="${USER}" HOME="${HOME}" "$(realpath -eL "${BASH_SOURCE[0]}")"
+    exit
+  fi
+
+  log 'inf' 'Starting UDS setup process'
   #purge_snapd
   add_ppas
   install_packages
   place_configuration_files
-
   log 'inf' 'Finished UDS setup process'
 }
 
