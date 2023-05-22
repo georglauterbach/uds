@@ -2,7 +2,7 @@
 
 ## :page_with_curl: About
 
-A simple setup script to configure the desktop theme and style & setup miscellaneous configuration files. UDS configures [_Ubuntu_ 22.04 _Jammy Jellyfish_][ubuntu-22.04]. It installs various packages and places (new) configuration files. The desktop theme is based upon [_Regolith Linux_][regolith-github] 2.0, which combines the [GNOME] desktop environment and [i3].
+A simple setup script to configure the desktop theme and style & setup miscellaneous configuration files. UDS configures [_Ubuntu_ 22.04 _Jammy Jellyfish_][ubuntu-22.04]. It installs various packages and places (new) configuration files. The desktop theme is based upon [_Regolith Linux_ 2][regolith-github], which combines the [GNOME] desktop environment and [i3].
 
 ![Desktop](files/images/desktop.png)
 
