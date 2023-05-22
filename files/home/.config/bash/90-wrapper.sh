@@ -78,7 +78,10 @@ function git() {
 function apt() {
   if __command_exists nala
   then
-    nala "${@}"
+    case "${1}" in
+      ( 'update' | 'upgrade' | 'install' ) sudo nala "${@}" ;;
+      ( * ) nala "${@}" ;;
+    esac
   else
     __execute_real_command apt "${@}"
   fi
