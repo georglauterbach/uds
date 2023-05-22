@@ -24,7 +24,7 @@ We assume Ubuntu has already been installed - there are no special requirements 
 
 ```console
 $ wget https://raw.githubusercontent.com/georglauterbach/uds/main/setup.sh
-$ sudo --preserve-env=HOME,USER,LOG_LEVEL bash ./setup.sh
+$ bash ./setup.sh
 ...
 
 $ reboot
