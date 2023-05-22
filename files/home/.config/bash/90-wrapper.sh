@@ -79,7 +79,7 @@ function apt() {
   if __command_exists nala
   then
     case "${1}" in
-      ( 'update' | 'upgrade' | 'install' ) sudo nala "${@}" ;;
+      ( 'update' | 'upgrade' | 'install' ) __do_as_root nala "${@}" ;;
       ( * ) nala "${@}" ;;
     esac
   else

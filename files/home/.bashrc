@@ -7,14 +7,14 @@
 # ██████╔╝██║  ██║███████║██║  ██║    ███████║
 # ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝
 
-# version       1.3.1
+# version       1.3.2
 # executed by   Bash for non-login shells
 # task          shell (Bash) initialization
 
 function __bash_setup() {
   # if not running interactively,
   # don't do anything
-  [[ ! ${-} == *i* ]] && return 0
+  [[ ${-} == *i* ]] || return 0
 
   function load_helper() {
     local SETUP_FILE="${HOME}/.config/bash/${1}"
