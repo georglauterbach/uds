@@ -91,9 +91,8 @@ function shutn { shutdown now ; }
 
 # stolen, ahh adopted from
 # https://github.com/casperklein/bash-pack/blob/master/x
-function x
-{
-  [[ -f ${1:-} ]] || { printf "File '%s' not found" "${1}" >&2 ; return 1 ; }
+function x() {
+  [[ -f ${1:-} ]] || { echo "File '${1}' not found" >&2 ; return 1 ; }
 
   case "${1}" in
     ( *.7z )      7za x "${1}"       ;;
