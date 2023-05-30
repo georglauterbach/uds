@@ -49,15 +49,8 @@ function add_ppas() {
     sed -i -E 's|(arch=)amd64|\1arm64|g' /etc/apt/sources.list /etc/apt/sources.list.d/uds.list
   fi
 
-  declare -a GPG_KEY_FILES
-  GPG_KEY_FILES=(
-    alacritty
-    git-core
-    mozillateam
-    neovim-stable
-    regolith
-    vscode
-  )
+  local GPG_KEY_FILES
+  GPG_KEY_FILES=( 'alacritty' 'git-core' 'mozillateam' 'neovim-stable' 'regolith' 'vscode' )
 
   log 'deb' 'Adding GPG files'
   for GPG_FILE in "${GPG_KEY_FILES[@]}"
@@ -156,8 +149,7 @@ function install_packages() {
   log 'deb' 'Finished installing packages'
 }
 
-function place_configuration_files
-{
+function place_configuration_files() {
   log 'inf' 'Placing configuration files'
 
   log 'deb' "Setting up 'doas'"
@@ -185,8 +177,6 @@ function place_configuration_files
     '.config/bash/90-wrapper.sh'
     '.config/bash/starship.toml'
     '.config/nvim/init.lua'
-    '.config/nvim/lua/10-plugins.lua'
-    '.config/nvim/lua/60-line.lua'
     '.config/alacritty/alacritty.yml'
     '.config/alacritty/10-general.yml'
     '.config/alacritty/20-font.yml'
@@ -214,12 +204,11 @@ function place_configuration_files
   log 'deb' 'Finished placing configuration files'
 }
 
-function main
-{
+function main() {
   if [[ ${EUID} -ne 0 ]]
   then
     log 'deb' 'Running user-specific setup'
-    gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
+    gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]" || :
 
     log 'deb' 'Starting actual setup user-specific setup'
     # shellcheck disable=SC2312

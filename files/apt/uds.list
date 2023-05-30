@@ -30,7 +30,7 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/alacritty.gpg] http://ppa.laun
 
 #############################################################################
 #
-# GIT
+# git
 # https://launchpad.net/~git-core/+archive/ubuntu/ppa
 #
 #############################################################################
