@@ -76,14 +76,19 @@ function git() {
 }
 
 function apt() {
+  local PREFIX
+  [[ ${1} == 'show' ]] || PREFIX='__do_as_root'
+
   if __command_exists nala
   then
-    case "${1}" in
-      ( 'update' | 'upgrade' | 'install' ) __do_as_root nala "${@}" ;;
-      ( * ) nala "${@}" ;;
-    esac
+    "${PREFIX}" nala "${@}"
   else
-    __execute_real_command apt "${@}"
+    if [[ -z ${PREFIX} ]]
+    then
+      __execute_real_command apt "${@}"
+    else
+      __do_as_root apt "${@}"
+    fi
   fi
 }
 
