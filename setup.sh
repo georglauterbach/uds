@@ -1,6 +1,7 @@
 #! /bin/bash
 
 trap '__log_unexpected_error "${FUNCNAME[0]:-}" "${BASH_COMMAND:-}" "${LINENO:-}" "${?:-}"' ERR
+trap 'rm -f /tmp/.uds_running' EXIT
 set -eE -u -o pipefail
 shopt -s inherit_errexit
 
@@ -206,6 +207,8 @@ function place_configuration_files() {
 function main() {
   if [[ ${EUID} -ne 0 ]]
   then
+    touch /tmp/.uds_running
+
     log 'deb' 'Running user-specific setup'
     gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]" || :
 
@@ -213,6 +216,12 @@ function main() {
     # shellcheck disable=SC2312
     sudo env - USER="${USER}" HOME="${HOME}" LOG_LEVEL="${LOG_LEVEL}" "$(realpath -eL "${BASH_SOURCE[0]}")"
     exit
+  fi
+  
+  if [[ ! -f /tmp/.uds_running ]]
+  then
+    log 'err' 'Do not run this script as root yourself'
+    exit 1
   fi
   
   cd /tmp
