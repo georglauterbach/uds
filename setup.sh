@@ -3,7 +3,6 @@
 trap '__log_unexpected_error "${FUNCNAME[0]:-}" "${BASH_COMMAND:-}" "${LINENO:-}" "${?:-}"' ERR
 set -eE -u -o pipefail
 shopt -s inherit_errexit
-cd /tmp
 
 # shellcheck disable=SC2317
 function __log_unexpected_error() {
@@ -215,6 +214,8 @@ function main() {
     sudo env - USER="${USER}" HOME="${HOME}" "$(realpath -eL "${BASH_SOURCE[0]}")"
     exit
   fi
+  
+  cd /tmp
 
   log 'inf' 'Starting UDS setup process'
   #purge_snapd
