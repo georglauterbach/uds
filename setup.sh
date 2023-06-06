@@ -20,7 +20,7 @@ fi
 # shellcheck disable=SC2034
 LOG_LEVEL=${LOG_LEVEL:-inf}
 SCRIPT='UDS Setup'
-GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/dev/files/'
+GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/main/files/'
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
@@ -211,7 +211,7 @@ function main() {
 
     log 'deb' 'Starting actual setup user-specific setup'
     # shellcheck disable=SC2312
-    sudo env - USER="${USER}" HOME="${HOME}" "$(realpath -eL "${BASH_SOURCE[0]}")"
+    sudo env - USER="${USER}" HOME="${HOME}" LOG_LEVEL="${LOG_LEVEL}" "$(realpath -eL "${BASH_SOURCE[0]}")"
     exit
   fi
   
