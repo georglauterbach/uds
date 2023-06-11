@@ -30,10 +30,10 @@ function __command_exists() {
 }
 
 function __do_as_root() {
-  if __command_exists doas
+  if __command_exists 'doas'
   then
     doas "${@}"
-  elif __command_exists sudo
+  elif __command_exists 'sudo'
   then
     sudo "${@}"
   else
@@ -42,29 +42,29 @@ function __do_as_root() {
 }
 
 function ls() {
-  if __command_exists exa
+  if __command_exists 'exa'
   then
     exa --long --binary --header --group --classify --group-directories-first "${@}"
   else
-    __execute_real_command ls "${@}"
+    __execute_real_command 'ls' "${@}"
   fi
 }
 
 function cat() {
-  if __command_exists batcat
+  if __command_exists 'batcat'
   then
     batcat --theme="Monokai Extended Origin" --paging=never --italic-text=always "${@}"
   else
-    __execute_real_command cat "${@}"
+    __execute_real_command 'cat' "${@}"
   fi
 }
 
 function grep() {
-  if __command_exists rg
+  if __command_exists 'rg'
   then
     rg -N "${@}"
   else
-    __execute_real_command grep "${@}"
+    __execute_real_command 'grep' "${@}"
   fi
 }
 
@@ -76,19 +76,14 @@ function git() {
 }
 
 function apt() {
-  local PREFIX
-  [[ ${1} == 'show' ]] || PREFIX='__do_as_root'
+  local PROGRAM
+  __command_exists 'nala' && PROGRAM='nala' || PROGRAM='apt'
 
-  if __command_exists nala
+  if [[ ${1:-} == 'show' ]]
   then
-    "${PREFIX}" nala "${@}"
+    __execute_real_command "${PROGRAM}" "${@}"
   else
-    if [[ -z ${PREFIX} ]]
-    then
-      __execute_real_command apt "${@}"
-    else
-      __do_as_root apt "${@}"
-    fi
+    __do_as_root "${PROGRAM}" "${@}"
   fi
 }
 
@@ -117,7 +112,7 @@ function x() {
     ( *.zip )     unzip "${1}"       ;;
     ( *.Z )       uncompress "${1}"  ;;
     ( * )
-      printf "Compression type for file '%s' unknown" "${1}" >&2
+      echo "Compression type for file '${1}' unknown" >&2
       return 1
       ;;
   esac
