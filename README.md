@@ -30,3 +30,9 @@ $ bash ./setup.sh
 $ reboot
 $ regolith-look set gruvbox
 ```
+
+## :mega: Supplementary Projects
+
+You might want to have a look at these awesome projects as well:
+
+- [`junegunn/fzf`](https://github.com/junegunn/fzf) - a general-purpose command-line fuzzy finder
