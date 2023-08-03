@@ -57,7 +57,7 @@ function add_ppas() {
   do
     curl -qsSfL \
       -o "/etc/apt/trusted.gpg.d/${GPG_FILE}.gpg" \
-      "https://github.com/georglauterbach/uds/raw/dev/files/apt/gpg/${GPG_FILE}.gpg"
+      "${GITHUB_RAW_URL}apt/gpg/${GPG_FILE}.gpg"
   done
 
   log 'deb' 'Finished adding PPAs'
@@ -214,7 +214,7 @@ function main() {
 
     log 'deb' 'Starting actual setup user-specific setup'
     # shellcheck disable=SC2312
-    sudo env - USER="${USER}" HOME="${HOME}" LOG_LEVEL="${LOG_LEVEL}" "$(realpath -eL "${BASH_SOURCE[0]}")"
+    sudo env - USER="${USER}" HOME="${HOME}" LOG_LEVEL="${LOG_LEVEL}" bash "$(realpath -eL "${BASH_SOURCE[0]}")"
     exit
   fi
   
