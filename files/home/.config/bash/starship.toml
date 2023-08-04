@@ -22,7 +22,7 @@ ssh_only = false
 
 [directory]
 format = "[$read_only]($read_only_style) [$path](#ECB86F bold)"
-read_only = " ( 🔒)"
+read_only = " (🔒)"
 truncation_length = 4
 truncation_symbol = ""
 truncate_to_repo = false
@@ -34,43 +34,3 @@ only_attached = false
 [character]
 success_symbol = "[➜](bold bright-green)"
 error_symbol   = "[➜](dimmed bright-red)"
-
-# #########################################################
-#
-# complex three-line prompt
-#
-# #########################################################
-
-# add_newline = true
-# scan_timeout = 20
-# format="""┌─── $username$hostname$directory
-# ├─── $git_branch$git_state$git_status$rust
-# └─ $character"""
-
-# [username]
-# style_user = "white"
-# style_root = "red bold"
-# format = "user [$user]($style) "
-# disabled = false
-# show_always = true
-
-# [hostname]
-# format =  "on host [$hostname](white) "
-# disabled = false
-# ssh_only = false
-
-# [directory]
-# truncation_length = 4
-# truncation_symbol = "…/"
-# truncate_to_repo = false
-# read_only = "( 🔒)"
-# format =  "in directory [$path]($style) [$read_only]($read_only_style)"
-
-# [git_branch]
-# always_show_remote = true
-# format = "on branch [$symbol$branch]($style) "
-# only_attached = false
-
-# [character]
-# success_symbol = "[➜](bold green)"
-# error_symbol   = "[➜](bold red)"

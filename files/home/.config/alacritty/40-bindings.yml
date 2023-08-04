@@ -6,9 +6,6 @@ key_bindings:
   - { key: Equals, mods: Control, action: IncreaseFontSize }
   - { key: Minus, mods: Control, action: DecreaseFontSize }
 
-  - { key: Back, chars: "\x7f" }
-  - { key: Back, mods: Control, chars: "\x1b\x7f" }
-
   - { key: Insert, chars: "\x1b[2~" }
   - { key: Delete, chars: "\x1b[3~" }
 

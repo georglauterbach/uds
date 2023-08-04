@@ -173,9 +173,11 @@ function place_configuration_files() {
   CONFIG_FILES=(
     '.bashrc'
     '.config/bash/10-setup.sh'
+    '.config/bash/30-extra_programs.sh'
     '.config/bash/80-aliases.sh'
     '.config/bash/90-wrapper.sh'
     '.config/bash/starship.toml'
+    '.config/bash/ble.conf'
     '.config/nvim/init.lua'
     '.config/alacritty/alacritty.yml'
     '.config/alacritty/10-general.yml'

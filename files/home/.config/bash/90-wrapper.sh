@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 # version       0.1.3
 # sourced by    ${HOME}/.bashrc

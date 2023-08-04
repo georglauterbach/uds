@@ -1,6 +1,6 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
-# version       0.3.0
+# version       0.3.1
 # sourced by    ${HOME}/.bashrc
 # task          provides Bash's main setup
 
@@ -27,7 +27,7 @@ function setup_variables() {
   export HISTCONTROL HISTSIZE HISTFILESIZE
 }
 
-function setup_completion() {
+function setup_bash_completion() {
   if ! shopt -oq posix
   then
     if [[ -f /usr/share/bash-completion/bash_completion ]]
@@ -93,9 +93,11 @@ function setup_prompt() {
 }
 
 setup_variables
-setup_completion
+setup_bash_completion
 setup_miscellaneous
 setup_prompt
 
-unset setup_variables setup_completion
-unset setup_miscellaneous setup_prompt
+unset setup_variables
+unset setup_bash_completion
+unset setup_miscellaneous
+unset setup_prompt

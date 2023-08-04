@@ -1,6 +1,6 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
-# version       0.2.2
+# version       0.2.3
 # sourced by    ${HOME}/.bashrc
 # task          provides Bash aliases
 
@@ -12,17 +12,12 @@ alias copy='xclip -selection clipboard -in'
 
 alias g='gitui'
 alias gb='git branch'
-alias gcs='git commit -S'
+alias gcs='git commit'
 alias gf='git fetch --all --tags --prune'
 alias gp='git pull'
 
 alias v='nvim'
 alias sv='sudo nvim'
-
-#alias k='kubectl'
-#complete -o default -F __start_kubectl k
-#alias j='just'
-#complete -F _just -o bashdefault -o default j
 
 alias ..='cd ..'
 alias ...='cd ../..'
