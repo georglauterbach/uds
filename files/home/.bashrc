@@ -7,7 +7,7 @@
 # ██████╔╝██║  ██║███████║██║  ██║    ███████║
 # ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚══════╝
 
-# version       1.3.0
+# version       1.4.0
 # executed by   Bash for non-login shells
 # task          shell (Bash) initialization
 
@@ -29,7 +29,7 @@ function bash_setup() {
   if command -v starship &>/dev/null
   then
     export STARSHIP_CONFIG="${HOME}/.config/bash/starship.toml"
-    eval "$(starship init bash)"
+    eval "$(starship init bash || true)"
   fi
 
   [[ -n ${BLE_VERSION:-} ]] && ble-attach

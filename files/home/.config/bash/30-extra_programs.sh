@@ -11,7 +11,9 @@ function setup_fzf() {
     PATH="${PATH:-}:${HOME}/.fzf/bin"
     if [[ ${-} == *i* ]]
     then
+      # shellcheck source=/dev/null
       source "${HOME}/.fzf/shell/completion.bash" 2>/dev/null
+      # shellcheck source=/dev/null
       source "${HOME}/.fzf/shell/key-bindings.bash"
     fi
   fi
@@ -20,6 +22,7 @@ function setup_fzf() {
 function setup_rust() {
   if [[ -d ${HOME}/.cargo ]]
   then
+    # shellcheck source=/dev/null
     source "${HOME}/.cargo/env"
   fi
 }
@@ -31,8 +34,10 @@ function setup_ble() {
     local BLE_CONFIG_FILE="${HOME}/.config/bash/ble.sh"
     if [[ -e ${BLE_CONFIG_FILE} ]]
     then
+      # shellcheck source=/dev/null
       source "${BLE_SOURCE}" --noattach --rcfile "${BLE_CONFIG_FILE}"
     else
+      # shellcheck source=/dev/null
       source "${BLE_SOURCE}" --noattach
     fi
   fi
