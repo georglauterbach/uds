@@ -31,7 +31,7 @@ function setup_ble() {
   local BLE_SOURCE="${HOME}/.local/share/blesh/ble.sh"
   if [[ -e ${BLE_SOURCE} ]]
   then
-    local BLE_CONFIG_FILE="${HOME}/.config/bash/ble.sh"
+    local BLE_CONFIG_FILE="${HOME}/.config/bash/ble.conf"
     if [[ -e ${BLE_CONFIG_FILE} ]]
     then
       # shellcheck source=/dev/null
@@ -39,6 +39,12 @@ function setup_ble() {
     else
       # shellcheck source=/dev/null
       source "${BLE_SOURCE}" --noattach
+    fi
+
+    if command -v fzf &>/dev/null
+    then
+      ble-import -d integration/fzf-completion
+      ble-import -d integration/fzf-key-bindings
     fi
   fi
 }

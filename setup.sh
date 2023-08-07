@@ -176,8 +176,8 @@ function place_configuration_files() {
     '.config/bash/30-extra_programs.sh'
     '.config/bash/80-aliases.sh'
     '.config/bash/90-wrapper.sh'
-    '.config/bash/starship.toml'
     '.config/bash/ble.conf'
+    '.config/bash/starship.toml'
     '.config/nvim/init.lua'
     '.config/alacritty/alacritty.yml'
     '.config/alacritty/10-general.yml'
@@ -219,13 +219,13 @@ function main() {
     sudo env - USER="${USER}" HOME="${HOME}" LOG_LEVEL="${LOG_LEVEL}" bash "$(realpath -eL "${BASH_SOURCE[0]}")"
     exit
   fi
-  
+
   if [[ ! -f /tmp/.uds_running ]]
   then
     log 'err' 'Do not run this script as root yourself'
     exit 1
   fi
-  
+
   cd /tmp
 
   log 'inf' 'Starting UDS setup process'
