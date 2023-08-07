@@ -21,7 +21,7 @@ fi
 # shellcheck disable=SC2034
 LOG_LEVEL=${LOG_LEVEL:-inf}
 SCRIPT='UDS Setup'
-GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/main/files/'
+readonly GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/main/files/'
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
@@ -49,8 +49,16 @@ function add_ppas() {
     sed -i -E 's|(arch=)amd64|\1arm64|g' /etc/apt/sources.list /etc/apt/sources.list.d/uds.list
   fi
 
-  local GPG_KEY_FILES
-  GPG_KEY_FILES=( 'alacritty' 'git-core' 'mozillateam' 'neovim-stable' 'regolith' 'vscode' )
+  local GPG_KEY_FILES=(
+    'alacritty'
+    'brave-browser'
+    'git-core'
+    'mozillateam'
+    'neovim-stable'
+    'regolith'
+    'vscode'
+  )
+  readonly -a GPG_KEY_FILES
 
   log 'deb' 'Adding GPG files'
   for GPG_FILE in "${GPG_KEY_FILES[@]}"
@@ -82,15 +90,16 @@ function install_packages() {
   local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
   if [[ -f ${CODE_SOURCES_FILE} ]]
   then
-    echo '#deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >>"${CODE_SOURCES_FILE}"
+    echo '#deb http://packages.microsoft.com/repos/code stable main' >>"${CODE_SOURCES_FILE}"
   fi
 
   log 'deb' 'Installing packages now'
-  declare -a PACKAGES
-  PACKAGES=(
+  local PACKAGES=(
     'alacritty'
     'bat'
+    'btop'
     'build-essential'
+    'brave-browser'
     'cmake'
     'code'
     'cups'
@@ -109,7 +118,6 @@ function install_packages() {
     'gnome-terminal'
     'gnome-tweaks'
     'gnupg2'
-    'htop'
     'libclang-dev'
     'libssl-dev'
     'linux-generic-hwe-22.04'
@@ -170,7 +178,7 @@ function place_configuration_files() {
     exit 1
   fi
 
-  CONFIG_FILES=(
+  local CONFIG_FILES=(
     '.bashrc'
     '.config/bash/10-setup.sh'
     '.config/bash/30-extra_programs.sh'

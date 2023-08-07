@@ -21,6 +21,15 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/mozillateam.gpg] http://ppa.la
 
 #############################################################################
 #
+# Brave Browser
+# https://brave.com/linux/
+#
+#############################################################################
+
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/brave-browser.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main
+
+#############################################################################
+#
 # Alacritty
 # https://launchpad.net/~aslatter/+archive/ubuntu/ppa
 #
@@ -49,7 +58,7 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/neovim-stable.gpg] https://ppa
 #############################################################################
 #
 # Regolith Linux
-# https://github.com/regolith-linux/voulage
+# https://regolith-desktop.com/
 #
 #############################################################################
 
