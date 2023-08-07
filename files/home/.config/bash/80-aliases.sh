@@ -7,8 +7,9 @@
 alias l='ls'
 alias ll='lsa'
 alias lsa='ls -a'
+
+alias htop='btop'
 alias less='less -R'
-alias copy='xclip -selection clipboard -in'
 
 alias g='gitui'
 alias gb='git branch'
