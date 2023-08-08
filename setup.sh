@@ -1,9 +1,4 @@
-#! /bin/bash
-
-trap '__log_unexpected_error "${FUNCNAME[0]:-}" "${BASH_COMMAND:-}" "${LINENO:-}" "${?:-}"' ERR
-trap 'rm -f /tmp/.uds_running' EXIT
-set -eE -u -o pipefail
-shopt -s inherit_errexit
+#! /usr/bin/env bash
 
 # shellcheck disable=SC2317
 function __log_unexpected_error() {
@@ -12,18 +7,24 @@ function __log_unexpected_error() {
   log 'err' "${MESSAGE}"
 }
 
-# shellcheck source=/dev/null
-if ! source <(curl -qsSfL https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh || :)
-then
-  function log() { echo "[ LOG ] ${1:-}" ; }
-fi
-
 # shellcheck disable=SC2034
 LOG_LEVEL=${LOG_LEVEL:-inf}
 SCRIPT='UDS Setup'
 readonly GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/main/files/'
+readonly TMP_CHECK_FILE='/tmp/.uds_running'
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
+
+trap '__log_unexpected_error "${FUNCNAME[0]:-}" "${BASH_COMMAND:-}" "${LINENO:-}" "${?:-}"' ERR
+trap 'rm -f ${TMP_CHECK_FILE}' EXIT
+set -eE -u -o pipefail
+shopt -s inherit_errexit
+
+# shellcheck source=/dev/null
+if ! source <(curl -qsSfL https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh || :)
+then
+  function log() { echo "[  LOG  ] ${1:-}" ; }
+fi
 
 function purge_snapd() {
   command -v snap &>/dev/null || return 0
@@ -57,8 +58,7 @@ function add_ppas() {
     'neovim-stable'
     'regolith'
     'vscode'
-  )
-  readonly -a GPG_KEY_FILES
+  ); readonly -a GPG_KEY_FILES
 
   log 'deb' 'Adding GPG files'
   for GPG_FILE in "${GPG_KEY_FILES[@]}"
@@ -222,7 +222,7 @@ function main() {
     log 'deb' 'Running user-specific setup'
     gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]" || :
 
-    log 'deb' 'Starting actual setup user-specific setup'
+    log 'deb' 'Starting actual setup'
     # shellcheck disable=SC2312
     sudo env - USER="${USER}" HOME="${HOME}" LOG_LEVEL="${LOG_LEVEL}" bash "$(realpath -eL "${BASH_SOURCE[0]}")"
     exit
