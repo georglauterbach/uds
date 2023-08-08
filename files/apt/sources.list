@@ -1,40 +1,15 @@
 #############################################################################
 #
-# UBUNTU 22.04 (JAMMY JELLYFISH)
+# Ubuntu 22.04 (Jammy Jellyfish)
 # /etc/apt/sources.list
+#
+# main       => officially supported open-source software
+# restricted => officially supported closed-source software
+# universe   => community-maintained open-source software
+# multiverse => unsupported closed-source and patent-encumbered software
 #
 #############################################################################
 
-#################################################
-#
-# MAIN & RESTRICTED
-# Officially Supported, Open-Source Software
-# & Officially Supported, Closed-Source Software
-#
-#################################################
-
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy          main restricted
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy-updates  main restricted
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy-security main restricted
-
-#################################################
-#
-# UNIVERSE
-# Community-Maintained, Open-Source Software
-#
-#################################################
-
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy          universe
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy-updates  universe
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy-security universe
-
-#################################################
-#
-# MULTIVERSE
-# Unsupported, Closed-Source and Patent-Encumbered Software
-#
-#################################################
-
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy          multiverse
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy-updates  multiverse
-deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy-security multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy          main restricted universe multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy-updates  main restricted universe multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse
