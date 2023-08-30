@@ -137,6 +137,7 @@ function install_packages() {
     'picom'
     'pkg-config'
     'polybar'
+    'python3-neovim'
     'regolith-desktop'
     'regolith-look-gruvbox'
     'ripgrep'
