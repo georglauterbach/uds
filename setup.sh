@@ -62,10 +62,11 @@ function add_ppas() {
     'brave-browser'
     'git-core'
     'mozillateam'
-    'neovim-stable'
+    'neovim-unstable'
     'regolith'
     'vscode'
-  ); readonly -a GPG_KEY_FILES
+  )
+  readonly -a GPG_KEY_FILES
 
   log 'deb' 'Adding GPG files'
   for GPG_FILE in "${GPG_KEY_FILES[@]}"
@@ -87,19 +88,18 @@ EOM
 Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
 EOM
 
+  log 'deb' 'Applying VS Code patch'
+  local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
+  if [[ -f ${CODE_SOURCES_FILE} ]]
+  then
+    echo '# deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >"${CODE_SOURCES_FILE}"
+  fi
+
   log 'inf' 'Updating package signatures'
   apt-get -qq update
 }
 
 function install_packages() {
-  log 'deb' 'Applying VS Code patch'
-  apt-get -qq install code
-  local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
-  if [[ -f ${CODE_SOURCES_FILE} ]]
-  then
-    echo '#deb http://packages.microsoft.com/repos/code stable main' >>"${CODE_SOURCES_FILE}"
-  fi
-
   log 'deb' 'Installing packages now'
   local PACKAGES=(
     'alacritty'
