@@ -4,33 +4,75 @@
 #
 # #########################################################
 
-format="""$username@$hostname$directory $git_branch $character"""
+format="""$username$hostname$git_branch$directory$rust$character"""
 add_newline = false
-scan_timeout = 5
+scan_timeout = 10
+command_timeout = 100
+palette = 'gruvbox'
+
+[palettes.gruvbox]
+bg = '#282828'
+fg = '#EBDBB2'
+
+bright-black = '#928374'
+bright-red = '#fb4934'
+bright-green = '#b8bb26'
+bright-yellow = '#fabd2f'
+bright-blue = '#83a598'
+bright-magenta = '#d3869b'
+bright-cyan = '#8ec07c'
+bright-white = '#ebdbb2'
+
+black = '#282828'
+red = '#cc241d'
+green = '#98971a'
+yellow = '#d79921'
+blue = '#458588'
+magenta = '#b16286'
+cyan = '#689d6a'
+white = '#a89984'
+
+dim-black = '#32302f'
+dim-red = '#9d0006'
+dim-green = '#79740e'
+dim-yellow = '#b57614'
+dim-blue = '#076678'
+dim-magenta = '#8f3f71'
+dim-cyan = '#427b58'
+dim-white = '#928374'
 
 [username]
-format = "[$user]($style)"
-style_user = "#D04983"
-style_root = "bright-red bold"
 disabled = false
-show_always = true
+show_always = false
+format = "[$user]($style)"
+style_user = "bright-yellow"
+style_root = "bright-yellow bold"
 
 [hostname]
-format =  "[$hostname](#ED8290)"
 disabled = false
-ssh_only = false
-
-[directory]
-format = "[$read_only]($read_only_style) [$path](#ECB86F bold)"
-read_only = " (🔒)"
-truncation_length = 4
-truncation_symbol = ""
-truncate_to_repo = false
+format =  "[@](fg)[$hostname](bright-purple) "
+ssh_only = true
+ssh_symbol = "SSH"
 
 [git_branch]
-format = '[$symbol$branch](#F99A62)'
-only_attached = false
+format = '[$symbol](blue) '
+symbol = ''
+
+[directory]
+disabled = false
+format = "[$read_only]($read_only_style)[$path](blue bold)"
+truncation_length = 4
+truncation_symbol = ".../"
+read_only = "🔒 "
+
+truncate_to_repo = true
+repo_root_format = "[$read_only]($read_only_style)[$repo_root]($repo_root_style)[$path](blue)"
+repo_root_style = "blue bold"
 
 [character]
-success_symbol = "[➜](bold bright-green)"
-error_symbol   = "[➜](dimmed bright-red)"
+disabled = false
+success_symbol = " [➜](bright-green)"
+error_symbol   = " [➜](red)"
+
+[rust]
+format = ' 🦀 [$version](red bold)'
