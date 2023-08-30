@@ -30,10 +30,17 @@ function purge_snapd() {
   command -v snap &>/dev/null || return 0
   log 'inf' "Purging 'snapd'"
 
-  rm -rf /var/cache/snapd/
+  until [[ $(snap list 2>&1 || :) == 'No snaps'*'installed'* ]]
+  do
+    while read -r SNAP _
+    do
+      snap remove --purge "${SNAP}" &>/dev/null || :
+    done < <(snap list |& tail -n +2 || :)
+  done
+
   apt-get -qq purge snapd gnome-software-plugin-snap
   apt-mark -qq hold snapd
-  rm -rf "${HOME}/snapd"
+  rm -rf /var/cache/snapd/ "${HOME}/snapd" "${HOME}/snap"
 
   log 'deb' "Finished purging 'snapd'"
 }
