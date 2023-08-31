@@ -2,7 +2,7 @@
 # Colors (Gruvbox Material Dark)
 colors:
   primary:
-    background: &gruvbox-material_bg '#1D2021'
+    background: &gruvbox-material_bg '#282828'
     foreground: &gruvbox-material_fg '#FBF1C7'
 
     # Bright and dim foreground colors
