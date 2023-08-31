@@ -37,3 +37,5 @@ You might want to have a look at these awesome projects as well:
 
 - [`junegunn/fzf`](https://github.com/junegunn/fzf) - a general-purpose command-line fuzzy finder
 - [`akinomyoga/ble.sh`](https://github.com/akinomyoga/ble.sh) - command line editor written in pure Bash which replaces the default GNU Readline
+- [`volian/nala`](https://gitlab.com/volian/nala) - front-end for `libapt-pkg`
+- [`sainnhe/gruvbox-material`](https://github.com/sainnhe/gruvbox-material) - modified version of [Gruvbox](https://github.com/morhetz/gruvbox)
