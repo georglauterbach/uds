@@ -1,12 +1,9 @@
 ---
-# Colors (Gruvbox Dark)
+# Colors (Gruvbox Material Dark)
 colors:
-  # Default colors
   primary:
-    # hard contrast background - '#1d2021'
-    # soft contrast background - '#32302f'
-    background: &gruvbox_dark_bg '#282828'
-    foreground: '#fbf1c7'
+    background: &gruvbox-material_bg '#1D2021'
+    foreground: &gruvbox-material_fg '#FBF1C7'
 
     # Bright and dim foreground colors
     #
@@ -14,8 +11,8 @@ colors:
     # present. If the bright foreground color is not set, or
     # `draw_bold_text_with_bright_colors` is `false`, the normal foreground
     # color will be used.
-    dim_foreground: '#f2e5bc'
-    bright_foreground: '#f9f5d7'
+    dim_foreground: &gruvbox-material_fg_dim '#D5C4A1'
+    bright_foreground: &gruvbox-material_fg_bright '#FDF9E7'
 
   # Cursor colors
   #
@@ -94,14 +91,14 @@ colors:
 
   # Normal colors
   normal:
-    black: *gruvbox_dark_bg
-    red: '#cc241d'
-    green: '#98971a'
-    yellow: '#d79921'
-    blue: '#458588'
-    magenta: '#b16286'
-    cyan: '#689d6a'
-    white: '#a89984'
+    black: *gruvbox-material_bg
+    red: '#EA696A'
+    green: '#A9B665'
+    yellow: '#D8A657'
+    blue: '#7DAEA3'
+    magenta: '#D3869B'
+    cyan: '#89B482'
+    white: *gruvbox-material_fg
 
   # Bright colors
   bright:
@@ -112,21 +109,21 @@ colors:
     blue: '#83a598'
     magenta: '#d3869b'
     cyan: '#8ec07c'
-    white: '#ebdbb2'
+    white: *gruvbox-material_fg_bright
 
   # Dim colors
   #
   # If the dim colors are not set, they will be calculated automatically based
   # on the `normal` colors.
   dim:
-    black: '#32302f'
-    red: '#9d0006'
-    green: '#79740e'
-    yellow: '#b57614'
-    blue: '#076678'
-    magenta: '#8f3f71'
-    cyan: '#427b58'
-    white: '#928374'
+    black: '#141617'
+    red: '#EA6962'
+    green: '#A9B665'
+    yellow: '#A9B665'
+    blue: '#659F92'
+    magenta: '#C86580'
+    cyan: '#6BA163'
+    white: *gruvbox-material_fg_dim
 
   # Indexed Colors
   #
