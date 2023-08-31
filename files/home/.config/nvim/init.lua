@@ -1,24 +1,14 @@
 -- NeoVIM main configuration file (requires >= v0.10.0)
 
-local ensure_packer = function()
-  local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+-- https://github.com/folke/lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
 end
-local packer_bootstrap = ensure_packer()
 
-require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
-  -- custom plugins go here
-  use { 'morhetz/gruvbox', config = function() vim.cmd [[colorscheme gruvbox]] end }
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then require('packer').sync() end
-end)
+vim.g.mapleader = " "
+vim.opt.rtp:prepend(lazypath)
+require("lazy").setup({ { "sainnhe/gruvbox-material", config = function() vim.cmd [[colorscheme gruvbox-material]] end } })
 
 local options = {
   backup = false, writebackup = false, undofile = true, swapfile = false,
