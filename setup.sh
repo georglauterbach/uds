@@ -209,7 +209,7 @@ function place_configuration_files() {
     '.config/regolith2/i3/config.d/98-bindings'
     '.config/regolith2/i3/config.d/99-workspaces'
     '.config/regolith2/picom.conf'
-    '.config/regolith2/wallpaper.jpg'
+    '.config/regolith2/wallpaper.png'
     '.config/regolith2/Xresources'
   )
 
@@ -229,7 +229,7 @@ function place_configuration_files() {
 function main() {
   if [[ ${EUID} -ne 0 ]]
   then
-    touch /tmp/.uds_running
+    touch "${TMP_CHECK_FILE}"
 
     log 'deb' 'Running user-specific setup'
     gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]" || :
@@ -240,7 +240,7 @@ function main() {
     exit
   fi
 
-  if [[ ! -f /tmp/.uds_running ]]
+  if [[ ! -f ${TMP_CHECK_FILE} ]]
   then
     log 'err' 'Do not run this script as root yourself'
     exit 1
