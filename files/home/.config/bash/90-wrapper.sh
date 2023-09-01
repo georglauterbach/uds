@@ -53,7 +53,7 @@ function ls() {
 function cat() {
   if __command_exists 'batcat'
   then
-    batcat --theme="Monokai Extended Origin" --paging=never --italic-text=always "${@}"
+    batcat --theme="gruvbox-dark" --paging=never --italic-text=always "${@}"
   else
     __execute_real_command 'cat' "${@}"
   fi
