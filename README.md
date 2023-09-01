@@ -28,7 +28,7 @@ $ bash ./setup.sh
 ...
 
 $ reboot
-$ regolith-look set gruvbox
+$ regolith-look set gruvbox-material
 ```
 
 ## :mega: Supplementary Projects

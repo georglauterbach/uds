@@ -71,9 +71,7 @@ function add_ppas() {
   log 'deb' 'Adding GPG files'
   for GPG_FILE in "${GPG_KEY_FILES[@]}"
   do
-    curl -qsSfL \
-      -o "/etc/apt/trusted.gpg.d/${GPG_FILE}.gpg" \
-      "${GITHUB_RAW_URL}apt/gpg/${GPG_FILE}.gpg"
+    curl -qsSfL -o "/etc/apt/trusted.gpg.d/${GPG_FILE}.gpg" "${GITHUB_RAW_URL}apt/gpg/${GPG_FILE}.gpg"
   done
 
   log 'deb' 'Finished adding PPAs'
@@ -190,6 +188,7 @@ function place_configuration_files() {
     exit 1
   fi
 
+  readonly REGOLITH_DIR='.config/regolith2'
   local CONFIG_FILES=(
     '.bashrc'
     '.config/bash/10-setup.sh'
@@ -206,11 +205,12 @@ function place_configuration_files() {
     '.config/alacritty/40-bindings.yml'
     '.config/polybar/launch.sh'
     '.config/polybar/polybar.conf'
-    '.config/regolith2/i3/config.d/98-bindings'
-    '.config/regolith2/i3/config.d/99-workspaces'
-    '.config/regolith2/picom.conf'
-    '.config/regolith2/wallpaper.png'
-    '.config/regolith2/Xresources'
+    "${REGOLITH_DIR}/i3/config.d/98-bindings"
+    "${REGOLITH_DIR}/i3/config.d/99-workspaces"
+    "${REGOLITH_DIR}/picom.conf"
+    "${REGOLITH_DIR}/root"
+    "${REGOLITH_DIR}/wallpaper.png"
+    "${REGOLITH_DIR}/Xresources"
   )
 
   for FILE in "${CONFIG_FILES[@]}"
@@ -218,6 +218,11 @@ function place_configuration_files() {
     mkdir -p "$(dirname "${HOME}/${FILE}")"
     curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
   done
+
+  readonly REGOLITH_THEME_DIR='/usr/share/regolith-look/gruvbox-material'
+  mkdir -p "${REGOLITH_THEME_DIR}"
+  cp -r /usr/share/regolith-look/gruvbox/* "${REGOLITH_THEME_DIR}/"
+  cp "${HOME}/${REGOLITH_DIR}/root" "${REGOLITH_THEME_DIR}/root"
 
   chown "${USER}:${USER}" "${HOME}/.bashrc"
   chown -R "${USER}:${USER}" "${HOME}/.config"
