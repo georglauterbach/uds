@@ -20,7 +20,7 @@ The script will
 
 ## :rocket: Usage
 
-We assume Ubuntu has already been installed - there are no special requirements or dependencies. The installation script can be downloaded and executed in the terminal. After downloading the script, you may optionally enable the `purge_snapd` function by uncommenting it in the `main` function at the very bottom.
+We assume Ubuntu Desktop has already been installed - there are no special requirements or dependencies, the minimal version of the desktop suffices. The installation script can be downloaded and executed in the terminal. After downloading the script, you may optionally enable the `purge_snapd` function by uncommenting it in the `main` function at the very bottom.
 
 ```console
 $ wget https://raw.githubusercontent.com/georglauterbach/uds/main/setup.sh
