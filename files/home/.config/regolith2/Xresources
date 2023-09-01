@@ -15,7 +15,7 @@ gtk.monospace_font_name: Ubuntu Mono Regular 10
 
 ! * Wallpaper
 
-regolith.wallpaper.file: ~/.config/regolith2/wallpaper.jpg
+regolith.wallpaper.file: ~/.config/regolith2/wallpaper.png
 regolith.wallpaper.options: stretched
 
 ! * i3wm configuration
