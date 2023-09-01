@@ -100,6 +100,9 @@ EOM
 }
 
 function install_packages() {
+  log 'deb' 'Removing update manager'
+  apt-get remove -qq update-manager-core
+
   log 'deb' 'Installing packages now'
   local PACKAGES=(
     'alacritty'
@@ -122,6 +125,7 @@ function install_packages() {
     'gcc'
     'git'
     'gnome-calculator'
+    'gnome-screenshot'
     'gnome-terminal'
     'gnome-tweaks'
     'gnupg2'
