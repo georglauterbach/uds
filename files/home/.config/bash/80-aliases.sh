@@ -9,7 +9,7 @@ alias ll='lsa'
 alias lsa='ls -a'
 
 alias htop='btop'
-alias less='less -R'
+alias less='batcat --style=plain --paging=always --color=always --theme=gruvbox-dark'
 
 alias g='gitui'
 alias gb='git branch'

@@ -5,26 +5,20 @@
 # task          provides Bash's main setup
 
 function setup_variables() {
-  VISUAL=nvim
-  EDITOR="${VISUAL}"
+  export VISUAL='nvim'
+  export EDITOR=${VISUAL}
+  export PAGER='less -R'
 
-  GCC_COLORS='error=01;31:warning=01;35:note=01;36:'
-  GCC_COLORS+='caret=01;32:locus=01:quote=01'
-
-  HISTCONTROL=ignoreboth
-  HISTSIZE=10000
-  HISTFILESIZE=10000
+  export HISTCONTROL='ignoreboth'
+  export HISTSIZE=10000
+  export HISTFILESIZE=10000
 
   if command -v batcat &>/dev/null
   then
-    export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
-    export MANROFFOPT="-c"
-    export PAGER='less -R'
-    export BAT_PAGER="less -R"
+    export MANPAGER="sh -c 'col -bx | batcat -l man --style=plain --theme=gruvbox-dark'"
+    export MANROFFOPT='-c'
+    export BAT_PAGER=${PAGER}
   fi
-
-  export VISUAL EDITOR GCC_COLORS
-  export HISTCONTROL HISTSIZE HISTFILESIZE
 }
 
 function setup_bash_completion() {

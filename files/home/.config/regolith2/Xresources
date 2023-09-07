@@ -32,6 +32,8 @@ i3-wm.gaps.inner.size: 4
 i3-wm.gaps.outer.size: 3
 
 i3-wm.floatingwindow.border.size: 0
+i3-wm.client.focused.color.child_border: #282828
+i3-wm.bar.workspace.urgent.border.color: #EA696A
 
 ! * i3wm keybindings
 
