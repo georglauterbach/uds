@@ -1,27 +1,22 @@
 #! /usr/bin/env bash
 
-# version       0.1.3
+# version       0.1.4
 # sourced by    ${HOME}/.bashrc
 # task          provides helper and wrapper functions
 #               for common tasks and commands
 
 function __execute_real_command() {
-  local DIR FULL_COMMAND PATHS
-  readarray -d ':' PATHS <<< "${PATH}"
+  local DIR COMMAND FULL_COMMAND
+  COMMAND=${1:?Command name required}
+  shift 1
 
-  for DIR in "${PATHS[@]}"
+  for DIR in {/usr{/local,},}/{,s}bin
   do
-    FULL_COMMAND="${DIR::-1}/${1:-}"
-
-    if [[ -x ${FULL_COMMAND} ]]
-    then
-      shift 1
-      ${FULL_COMMAND} "${@}"
-      return ${?}
-    fi
+    FULL_COMMAND="${DIR}/${COMMAND}"
+    [[ -x ${FULL_COMMAND} ]] && { ${FULL_COMMAND} "${@}" ; return ${?} ; }
   done
 
-  echo "Command '${1:-}' not found" >&2
+  echo "Command '${COMMAND}' not found" >&2
   return 1
 }
 
