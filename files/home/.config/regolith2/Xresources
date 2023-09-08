@@ -7,7 +7,7 @@ regolith.look.path: /usr/share/regolith-look/gruvbox
 
 ! * GTK theme configuration
 
-gtk.theme_name: Yaru-viridian-dark
+gtk.theme_name: Gruvbox
 gtk.icon_theme_name: Yaru-viridian-dark
 gtk.font_name: Ubuntu Regular 10
 gtk.document_font_name: Ubuntu Regular 10
