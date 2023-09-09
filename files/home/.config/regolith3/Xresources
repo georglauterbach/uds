@@ -10,7 +10,7 @@ regolith.look.path: HOME/.config/regolith3/looks/gruvbox-material
 wm.mod: Mod4
 wm.alt: Mod1
 
-wm.program.compositor: picom --config ~/.config/regolith3/picom.conf
+wm.program.compositor: picom --config HOME/.config/regolith3/picom.conf
 
 ! i3wm keybindings
 
@@ -35,4 +35,4 @@ wm.binding.code: c
 ! auto-start applications
 
 wm.program.1: nm-applet &
-wm.program.2: ~/.config/polybar/launch.sh
+wm.program.2: HOME/.config/polybar/launch.sh

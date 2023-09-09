@@ -209,7 +209,7 @@ function place_configuration_files() {
     curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
   done
 
-  sed -i "s|HOME|${HOME}|" "${HOME}/${REGOLITH_DIR}/Xresources"
+  sed -i "s|HOME|${HOME}|g" "${HOME}/${REGOLITH_DIR}/Xresources"
   chown "${USER}:${USER}" "${HOME}/.bashrc"
   chown -R "${USER}:${USER}" "${HOME}/.config"
   chmod +x "${HOME}/.config/polybar/launch.sh"
