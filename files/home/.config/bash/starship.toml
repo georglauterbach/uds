@@ -82,17 +82,20 @@ ssh_only = true
 ssh_symbol = "SSH"
 
 [git_branch]
-format = '[$symbol](blue) '
+format = "[$symbol](blue) "
 symbol = ''
 
 [directory]
 disabled = false
-format = "[$read_only]($read_only_style)[$path](blue bold)"
+format = "[$read_only](blue bold)[$path](blue bold)"
+
 truncation_length = 4
 truncation_symbol = ".../"
-read_only = "🔒 "
-
 truncate_to_repo = true
+
+read_only_style = "red bold"
+read_only = " "
+
 repo_root_format = "[$read_only]($read_only_style)[$repo_root]($repo_root_style)[$path](blue)"
 repo_root_style = "blue bold"
 
