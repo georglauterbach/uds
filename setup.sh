@@ -118,7 +118,6 @@ function install_packages() {
     'firefox'
     'fonts-firacode'
     'fonts-font-awesome'
-    'fonts-nerd-font-firacode'
     'fonts-nerd-font-firamono'
     'gcc'
     'git'
