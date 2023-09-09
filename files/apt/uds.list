@@ -14,9 +14,6 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/alacritty.gpg] http://ppa.laun
 # Visual Studio Code | https://code.visualstudio.com/docs/setup/linux#_debian-and-ubuntu-based-distributions
 deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/vscode.gpg] https://packages.microsoft.com/repos/code stable main
 
-# Brave Browser | https://brave.com/linux/
-deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/brave-browser.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main
-
 # git | https://launchpad.net/~git-core/+archive/ubuntu/ppa
 deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/git-core.gpg] http://ppa.launchpad.net/git-core/ppa/ubuntu/ jammy main
 
