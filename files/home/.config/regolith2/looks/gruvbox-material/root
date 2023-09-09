@@ -2,41 +2,27 @@
 ! -- This file is in the Xresource file format
 ! --------------------------------------------
 
-! --------------------------------------------
-! -- Look name
-! --------------------------------------------
-
 regolith.look: gruvbox-material
+regolith.look.loader: /usr/share/regolith-look/default_loader.sh
 
-! --------------------------------------------
-! -- Wallpaper
-! --------------------------------------------
-
-regolith.wallpaper.color.primary: #282828
-
-regolith.wallpaper.color.secondary:
-regolith.wallpaper.color.shading.type:
-
-! --------------------------------------------
-! -- Lockscreen Wallpaper
-! --------------------------------------------
-
-regolith.lockscreen.wallpaper.color.primary: #282828
+regolith.wallpaper.file: ~/.config/regolith2/wallpaper.png
+regolith.lockscreen.wallpaper.color.primary: ~/.config/regolith2/wallpaper.png
+regolith.wallpaper.options: stretched
 
 ! --------------------------------------------
 ! -- Theme elements
 ! --------------------------------------------
 
-gtk.theme_name: Gruvbox Material
-gtk.icon_theme_name: Moka
+gtk.theme_name: Gruvbox
+gtk.icon_theme_name: Yaru-prussiangreen-dark
 
 ! --------------------------------------------
 ! -- Fonts
 ! --------------------------------------------
 
-#define gtk_font_name FiraCode Nerd Font 12
-#define gtk_document_font_name FiraCode Nerd Font 12
-#define gtk_monospace_font_name FiraCode Nerd Font Mono 12
+#define gtk_font_name Ubuntu Regular 10
+#define gtk_document_font_name Ubuntu Regular 10
+#define gtk_monospace_font_name FiraMono Nerd Font 10
 
 gtk.font_name: gtk_font_name
 gtk.document_font_name: gtk_document_font_name
@@ -46,7 +32,8 @@ gtk.monospace_font_name: gtk_monospace_font_name
 ! -- Colors
 ! --------------------------------------------
 
-! Gruvbox colors - https://github.com/sainnhe/gruvbox-material
+! Gruvbox Material - https://github.com/sainnhe/gruvbox-material
+
 #define color_base03   #1D2021
 #define color_base02   #1D2021
 #define color_base01   #282828
@@ -61,7 +48,7 @@ gtk.monospace_font_name: gtk_monospace_font_name
 
 #define color_red      #EA6962
 #define color_green    #A9B665
-#define color_yellow   #A9B665
+#define color_yellow   #D8A657
 #define color_blue     #659F92
 #define color_violet   #C86580
 #define color_cyan     #6BA163
@@ -80,12 +67,5 @@ gtk.monospace_font_name: gtk_monospace_font_name
 ! -- Component resources
 ! --------------------------------------------
 
-#include "/usr/share/regolith-look/gruvbox-material/i3-wm"
-#include "/usr/share/regolith-look/gruvbox-material/gnome-terminal"
-
-! --------------------------------------------
-! -- Loader Path - Path to script responsible
-! -- for configuring UI from Xres values
-! --------------------------------------------
-
-regolith.look.loader: /usr/share/regolith-look/default_loader.sh
+#include "i3-wm"
+#include "/usr/share/regolith-look/gruvbox/gnome-terminal"

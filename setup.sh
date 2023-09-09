@@ -197,8 +197,9 @@ function place_configuration_files() {
     '.config/polybar/polybar.conf'
     "${REGOLITH_DIR}/i3/config.d/98-bindings"
     "${REGOLITH_DIR}/i3/config.d/99-workspaces"
+    "${REGOLITH_DIR}/looks/gruvbox-material/i3-wm"
+    "${REGOLITH_DIR}/looks/gruvbox-material/root"
     "${REGOLITH_DIR}/picom.conf"
-    "${REGOLITH_DIR}/root"
     "${REGOLITH_DIR}/wallpaper.png"
     "${REGOLITH_DIR}/Xresources"
   )
@@ -209,11 +210,7 @@ function place_configuration_files() {
     curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
   done
 
-  readonly REGOLITH_THEME_DIR='/usr/share/regolith-look/gruvbox-material'
-  mkdir -p "${REGOLITH_THEME_DIR}"
-  cp -r /usr/share/regolith-look/gruvbox/* "${REGOLITH_THEME_DIR}/"
-  cp "${HOME}/${REGOLITH_DIR}/root" "${REGOLITH_THEME_DIR}/root"
-
+  sed -i "s|HOME|${HOME}|" "${HOME}/${REGOLITH_DIR}/Xresources"
   chown "${USER}:${USER}" "${HOME}/.bashrc"
   chown -R "${USER}:${USER}" "${HOME}/.config"
   chmod +x "${HOME}/.config/polybar/launch.sh"
