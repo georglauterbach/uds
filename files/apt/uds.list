@@ -1,12 +1,5 @@
-#############################################################################
-#
-# Ubuntu 22.04 (Jammy Jellyfish)
-# /etc/apt/sources.list.d/uds.list
-#
-#############################################################################
-
 # Regolith Linux | https://regolith-desktop.com/docs/using-regolith/install/
-deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/regolith.gpg] https://regolith-desktop.org/release-ubuntu-jammy-amd64 jammy main
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/regolith.gpg] https://regolith-desktop.org/release-3_0-ubuntu-jammy-amd64 jammy main
 
 # Alacritty | https://launchpad.net/~aslatter/+archive/ubuntu/ppa
 deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/alacritty.gpg] http://ppa.launchpad.net/aslatter/ppa/ubuntu/ jammy main

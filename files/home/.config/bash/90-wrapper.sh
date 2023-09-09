@@ -65,7 +65,11 @@ function grep() {
 
 function git() {
   case "${1:-}" in
-    ( 'update' ) git fetch --all --tags --prune ; git pull ;;
+    ( 'update' )
+      git fetch --all --tags --prune
+      git pull
+      git submodule update
+      ;;
     ( * ) __execute_real_command git "${@}" ;;
   esac
 }

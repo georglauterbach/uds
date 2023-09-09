@@ -1,6 +1,6 @@
 #! /bin/bash
 
-killall -q polybar &>/dev/null
+killall -q polybar || :
 
 while read -r MONITOR
 do

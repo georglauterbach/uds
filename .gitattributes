@@ -2,23 +2,18 @@
 # ----  GitAttributes  --------------------------
 # ----  https://git-scm.com/docs/gitattributes  -
 # -----------------------------------------------
-
 # For templates, see
 # https://github.com/alexkaratarakis/gitattributes
-
 # -----------------------------------------------
 # ----  General  --------------------------------
 # -----------------------------------------------
-
 *        text=auto
 *.sh     text    diff=bash
-
 *.png   -text
 *.ico   -text
-
 # -----------------------------------------------
 # ----  Documents  ------------------------------
 # -----------------------------------------------
-
 *.md     text    diff=markdown
 *.txt    text
+*.gif    -text   filter=lfs diff=lfs merge=lfs

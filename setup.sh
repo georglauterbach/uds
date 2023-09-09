@@ -99,7 +99,6 @@ function install_packages() {
     'bat'
     'btop'
     'build-essential'
-    'cmake'
     'code'
     'cups'
     'doas'
@@ -110,15 +109,13 @@ function install_packages() {
     'fonts-firacode'
     'fonts-font-awesome'
     'fonts-nerd-font-firamono'
-    'gcc'
     'git'
     'gnome-calculator'
     'gnome-screenshot'
     'gnome-terminal'
     'gnome-tweaks'
+    'gcc'
     'gnupg2'
-    'libclang-dev'
-    'libssl-dev'
     'linux-generic-hwe-22.04'
     'make'
     'nautilus'
@@ -131,10 +128,10 @@ function install_packages() {
     'polybar'
     'python3-neovim'
     'regolith-desktop'
+    'regolith-session-flashback'
     'regolith-look-gruvbox'
     'ripgrep'
     'seahorse'
-    'xsel'
     'xz-utils'
     'yaru-theme-icon'
     'yaru-theme-sound'
@@ -147,7 +144,9 @@ function install_packages() {
   fi
 
   log 'deb' 'Removing unwanted packages now'
-  apt-get remove -qq regolith-i3xrocks-config regolith-i3-ftue i3xrocks
+  apt-get remove -qq i3xrocks regolith-i3xrocks-config
+
+  log 'deb' 'Removing unwanted packages now'
   apt-get -qq autoremove
 
   log 'deb' 'Installing Starship prompt'
@@ -178,7 +177,7 @@ function place_configuration_files() {
     exit 1
   fi
 
-  readonly REGOLITH_DIR='.config/regolith2'
+  readonly REGOLITH_DIR='.config/regolith3'
   local CONFIG_FILES=(
     '.bashrc'
     '.config/bash/10-setup.sh'

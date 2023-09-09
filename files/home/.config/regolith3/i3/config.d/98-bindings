@@ -1,0 +1,10 @@
+# VS Code
+set_from_resource $wm.binding.code wm.binding.code c
+bindsym $mod+$wm.binding.code exec code
+
+# Move workspace to another monitor (to the left)
+set_from_resource $wm.binding.move_ws wm.binding.move_ws m
+bindsym $mod+$wm.binding.move_ws move workspace to output left
+
+set_from_resource $wm.binding.toggle_bar wm.binding.toggle_bar i
+bindsym $mod+$wm.binding.toggle_bar exec polybar-msg cmd toggle

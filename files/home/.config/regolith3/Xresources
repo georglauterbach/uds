@@ -1,0 +1,38 @@
+! documentation: https://regolith-desktop.com/docs/using-regolith/configuration/
+
+! look
+
+regolith.look.path: HOME/.config/regolith3/looks/gruvbox-material
+
+! i3wm base configuration
+
+! Alt == Mod1 && Super == Mod4
+wm.mod: Mod4
+wm.alt: Mod1
+
+wm.program.compositor: picom --config ~/.config/regolith3/picom.conf
+
+! i3wm keybindings
+
+wm.binding.terminal: Return
+wm.binding.browser: f
+wm.binding.fullscreen_toggle: Shift+f
+
+wm.binding.launcher.app: space
+wm.binding.launcher.cmd: (
+wm.binding.launcher.window: )
+wm.binding.float_toggle: Shift+space
+
+wm.binding.exit_app: q
+
+wm.binding.files: n
+wm.binding.notification_ui: Shift+n
+
+wm.binding.settings: Shift+c
+wm.binding.reload: Ctrl+Shift+c
+wm.binding.code: c
+
+! auto-start applications
+
+wm.program.1: nm-applet &
+wm.program.2: ~/.config/polybar/launch.sh

@@ -1,0 +1,61 @@
+! Windows
+
+wm.client.focused.color.border: color_yellow
+wm.client.focused.color.background: color_base01
+wm.client.focused.color.text: color_base3
+wm.client.focused.color.indicator: color_yellow
+wm.client.focused.color.child_border: color_yellow
+
+wm.client.focused_inactive.color.border: color_green
+wm.client.focused_inactive.color.background: color_base01
+wm.client.focused_inactive.color.text: color_base3
+wm.client.focused_inactive.color.indicator: color_green
+wm.client.focused_inactive.color.child_border: color_green
+
+wm.client.unfocused.color.border: color_base01
+wm.client.unfocused.color.background: color_base01
+wm.client.unfocused.color.text: color_base3
+wm.client.unfocused.color.indicator: color_base02
+wm.client.unfocused.color.child_border: color_base01
+
+wm.client.urgent.color.border: color_red
+wm.client.urgent.color.background: color_base01
+wm.client.urgent.color.text: color_base3
+wm.client.urgent.color.indicator: color_red
+wm.client.urgent.color.child_border: color_red
+
+! Gaps and borders
+
+wm.window.border.style: pixel
+wm.window.border.size: 2
+wm.floatingwindow.border.style: pixel
+wm.floatingwindow.border.size: 0
+
+wm.gaps.focus_follows_mouse: yes
+wm.gaps.inner.size: 4
+wm.gaps.outer.size: 0
+
+! Workspaces
+
+#define WORKSPACE(INDEX) INDEX:<span>  INDEX  </span>
+
+wm.workspace.01.name: WORKSPACE(1)
+wm.workspace.02.name: WORKSPACE(2)
+wm.workspace.03.name: WORKSPACE(3)
+wm.workspace.04.name: WORKSPACE(4)
+wm.workspace.05.name: WORKSPACE(5)
+wm.workspace.06.name: WORKSPACE(6)
+wm.workspace.07.name: WORKSPACE(7)
+wm.workspace.08.name: WORKSPACE(8)
+wm.workspace.09.name: WORKSPACE(9)
+wm.workspace.10.name: WORKSPACE(10)
+wm.workspace.11.name: WORKSPACE(11)
+wm.workspace.12.name: WORKSPACE(12)
+wm.workspace.13.name: WORKSPACE(13)
+wm.workspace.14.name: WORKSPACE(14)
+wm.workspace.15.name: WORKSPACE(15)
+wm.workspace.16.name: WORKSPACE(16)
+wm.workspace.17.name: WORKSPACE(17)
+wm.workspace.18.name: WORKSPACE(18)
+wm.workspace.19.name: WORKSPACE(19)
+wm.workspace.20.name: WORKSPACE(20)
