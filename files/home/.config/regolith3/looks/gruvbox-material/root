@@ -6,7 +6,7 @@ regolith.look: gruvbox-material
 regolith.look.loader: /usr/share/regolith-look/default_loader.sh
 
 regolith.wallpaper.file: ~/.config/regolith3/wallpaper.png
-regolith.lockscreen.wallpaper.color.primary: ~/.config/regolith3/wallpaper.png
+regolith.lockscreen.wallpaper.file: ~/.config/regolith3/wallpaper.png
 regolith.wallpaper.options: stretched
 
 ! --------------------------------------------
