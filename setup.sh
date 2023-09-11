@@ -110,6 +110,7 @@ function install_packages() {
     'fonts-font-awesome'
     'fonts-nerd-font-firamono'
     'git'
+    'git-lfs'
     'gnome-calculator'
     'gnome-screenshot'
     'gnome-terminal'
