@@ -21,9 +21,10 @@ set -eE -u -o pipefail
 shopt -s inherit_errexit
 
 # shellcheck source=/dev/null
-if ! source <(curl -qsSfL https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh || :)
+if ! source <(curl -qsSfL --connect-timeout https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh 2>/dev/null)
 then
-  function log() { echo "[  LOG  ] ${1:-}" ; }
+  echo -e "[  \e[91mERROR\e[0m  ] Could not access GitHub - please run 'curl -qsSfL --connect-timeout 3 https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh' manually and resolve the errors" >&2
+  exit 2
 fi
 
 function purge_snapd() {
