@@ -21,6 +21,7 @@ set -eE -u -o pipefail
 shopt -s inherit_errexit
 
 # shellcheck source=/dev/null
+# shellcheck disable=SC2312
 if ! source <(curl -qsSfL --connect-timeout https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh 2>/dev/null)
 then
   echo -e "[  \e[91mERROR\e[0m  ] Could not access GitHub - please run 'curl -qsSfL --connect-timeout 3 https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh' manually and resolve the errors" >&2
