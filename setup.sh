@@ -133,6 +133,7 @@ function install_packages() {
     'regolith-desktop'
     'regolith-session-flashback'
     'regolith-look-gruvbox'
+    'regolith-wm-user-programs'
     'ripgrep'
     'seahorse'
     'xz-utils'
