@@ -2,7 +2,12 @@
 
 ## :page_with_curl: About
 
-A simple setup script to configure the desktop theme and style & setup miscellaneous configuration files. UDS configures [_Ubuntu_ 22.04 _Jammy Jellyfish_][ubuntu-22.04]. It installs various packages and places (new) configuration files. The desktop theme is based upon [_Regolith Linux_ 3][regolith], which combines the [GNOME] desktop environment and [i3].
+A simple setup script to
+
+1. configure the desktop theme and style;
+2. place miscellaneous other configuration files.
+
+UDS configures [_Ubuntu_ 22.04 _Jammy Jellyfish_][ubuntu-22.04] by installing various packages and placing (new) configuration files. The desktop environment used is [_Regolith Linux_ 3][regolith], which combines the [GNOME] desktop environment and [i3]. The theme UDS employs is [`sainnhe/gruvbox-material`](https://github.com/sainnhe/gruvbox-material), a modified version of [`morhetz/gruvbox`](https://github.com/morhetz/gruvbox).
 
 ![Desktop](files/.show-off/desktop.gif)
 
@@ -38,4 +43,3 @@ You might want to have a look at these awesome projects as well:
 - [`junegunn/fzf`](https://github.com/junegunn/fzf) - a general-purpose command-line fuzzy finder
 - [`akinomyoga/ble.sh`](https://github.com/akinomyoga/ble.sh) - command line editor written in pure Bash which replaces the default GNU Readline
 - [`volian/nala`](https://gitlab.com/volian/nala) - front-end for `libapt-pkg`
-- [`sainnhe/gruvbox-material`](https://github.com/sainnhe/gruvbox-material) - modified version of [Gruvbox](https://github.com/morhetz/gruvbox)
