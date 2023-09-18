@@ -1,10 +1,7 @@
-# #########################################################
-#
-# simple one-line prompt
-#
-# #########################################################
+# StarShip -- a cross-platform prompt (https://starship.rs)
+# For symbols, see https://www.nerdfonts.com/cheat-sheet
 
-format="""$username$hostname$git_branch$directory$rust$character"""
+format='$username$hostname$git_branch$directory$rust$character'
 add_newline = false
 scan_timeout = 10
 command_timeout = 100
@@ -71,38 +68,43 @@ bg_orange = '#E16F23'
 [username]
 disabled = false
 show_always = false
-format = "[$user]($style)"
-style_user = "yellow"
-style_root = "yellow bold"
+format = '[$user]($style)'
+style_user = 'yellow'
+style_root = 'yellow bold'
 
 [hostname]
 disabled = false
-format =  "[@](fg)[$hostname](purple) "
+format =  '[@](fg)[$hostname](purple) '
 ssh_only = true
 ssh_symbol = "SSH"
 
 [git_branch]
-format = "[$symbol](blue) "
+format = '[\[$symbol $branch\]](blue) '
 symbol = ''
+
+[rust]
+format = '[\[$symbol $version\]](red) '
+symbol = '🦀'
 
 [directory]
 disabled = false
 format = "[$read_only](blue bold)[$path](blue bold)"
 
 truncation_length = 4
-truncation_symbol = ".../"
+truncation_symbol = '.../'
 truncate_to_repo = true
 
-read_only_style = "red bold"
-read_only = " "
+read_only_style = 'red bold'
+read_only = ' '
 
-repo_root_format = "[$read_only]($read_only_style)[$repo_root]($repo_root_style)[$path](blue)"
-repo_root_style = "blue bold"
+repo_root_format = '[$read_only]($read_only_style)[$repo_root]($repo_root_style)[$path](blue)'
+repo_root_style = 'blue bold'
 
 [character]
 disabled = false
-success_symbol = " [➜](green)"
-error_symbol   = " [➜](red)"
+success_symbol = ' [➜](green)'
+error_symbol   = ' [➜](red)'
 
 [rust]
-format = ' 🦀 [$version](red bold)'
+format = '[\[$symbol $version\]](red) '
+symbol = '🦀'
