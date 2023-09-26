@@ -104,7 +104,3 @@ repo_root_style = 'blue bold'
 disabled = false
 success_symbol = ' [➜](green)'
 error_symbol   = ' [➜](red)'
-
-[rust]
-format = '[\[$symbol $version\]](red) '
-symbol = '🦀'
