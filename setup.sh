@@ -59,7 +59,7 @@ function add_ppas() {
     sed -i -E 's|(arch=)amd64|\1arm64|g' /etc/apt/sources.list /etc/apt/sources.list.d/uds.list
   fi
 
-  local GPG_KEY_FILES=('alacritty' 'git-core' 'mozillateam' 'neovim-unstable' 'regolith' 'vscode')
+  local GPG_KEY_FILES=('alacritty' 'eza' 'git-core' 'mozillateam' 'neovim-unstable' 'regolith' 'vscode')
   readonly -a GPG_KEY_FILES
 
   log 'deb' 'Adding GPG files'
@@ -106,7 +106,7 @@ function install_packages() {
     'doas'
     'eog'
     'evince'
-    'exa'
+    'eza'
     'firefox'
     'fonts-firacode'
     'fonts-font-awesome'

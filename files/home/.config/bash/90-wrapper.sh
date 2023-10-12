@@ -37,9 +37,9 @@ function __do_as_root() {
 }
 
 function ls() {
-  if __command_exists 'exa'
+  if __command_exists 'eza'
   then
-    exa --long --binary --header --group --classify --group-directories-first "${@}"
+    eza --header --long --binary --group --classify --git --extended --group-directories-first "${@}"
   else
     __execute_real_command 'ls' "${@}"
   fi

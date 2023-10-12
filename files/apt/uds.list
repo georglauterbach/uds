@@ -15,3 +15,6 @@ deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/mozillateam.gpg] http://ppa.la
 
 # NeoVIM | https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable
 deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/neovim-unstable.gpg] https://ppa.launchpadcontent.net/neovim-ppa/unstable/ubuntu/ jammy main
+
+# eza | https://github.com/eza-community/eza?tab=readme-ov-file#debian-and-ubuntu
+deb [arch=amd64, signed-by=/etc/apt/trusted.gpg.d/eza.gpg] http://deb.gierens.de stable main
