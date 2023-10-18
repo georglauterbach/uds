@@ -83,7 +83,7 @@ format = '[\[$symbol $branch\]](blue) '
 symbol = ''
 
 [rust]
-format = '[\[$symbol $version\]](red) '
+format = ' [\[$symbol $version\]](red)'
 symbol = '🦀'
 
 [directory]
