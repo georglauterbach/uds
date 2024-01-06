@@ -1,0 +1,26 @@
+live_config_reload = true
+
+[bell]
+duration = 0
+
+[cursor]
+unfocused_hollow = true
+
+[mouse]
+hide_when_typing = true
+
+[scrolling]
+multiplier = 2
+
+[selection]
+save_to_clipboard = true
+
+[window]
+decorations = "none"
+dynamic_padding = true
+dynamic_title = true
+opacity = 0.85
+
+[window.padding]
+x = 6
+y = 0

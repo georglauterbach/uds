@@ -1,0 +1,6 @@
+import = [
+  "/home/georg/.config/alacritty/10-general.toml",
+  "/home/georg/.config/alacritty/20-font.toml",
+  "/home/georg/.config/alacritty/30-colors.toml",
+  "/home/georg/.config/alacritty/40-bindings.toml",
+]
