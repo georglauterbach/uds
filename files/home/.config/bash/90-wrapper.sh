@@ -127,32 +127,23 @@ function update() {
     OPTIONS=('--yes' '--assume-yes' '--allow-unauthenticated' '--allow-change-held-packages')
     LOG_FILE=$(mktemp)
 
-    echo -n '  -> Checking for package updates... '
-    if ! apt-get "${QUIET}" update &>"${LOG_FILE}"
-    then
-      echo "could not update package signatures [ERROR]" >&2
-      cat "${LOG_FILE}"
-      return 1
-    fi
+    function __run_command() {
+      if ! "${@}" &>"${LOG_FILE}"
+      then echo "error" >&2 ; cat "${LOG_FILE}" >&2 ; return 1
+      else echo "finished"
+      fi
+    }
 
-    echo -ne 'done\n  -> Installing package updates... '
-    if ! apt-get --with-new-pkgs "${QUIET}" "${OPTIONS[@]}" upgrad &>"${LOG_FILE}"
-    then
-      echo "could not upgrade packages [ERROR]" >&2
-      cat "${LOG_FILE}"
-      return 1
-    fi
+    printf 'Checking for package updates... '
+    __run_command apt-get "${QUIET}" update || return 1
 
-    echo -ne 'done\n  -> Removing orphaned packages... '
-    if ! apt-get "${QUIET}" "${OPTIONS[@]}" autoremove &>"${LOG_FILE}"
-    then
-      echo "could not automatically remove orphaned packages [ERROR]" >&2
-      cat "${LOG_FILE}"
-    else
-      echo -e 'done'
-    fi
+    echo -ne 'Installing package updates... '
+    __run_command apt-get --with-new-pkgs "${QUIET}" "${OPTIONS[@]}" upgrade || return 1
 
-    echo -e '  -> Successfully updated the system'
+    echo -ne 'Removing orphaned packages... '
+    __run_command apt-get "${QUIET}" "${OPTIONS[@]}" autoremove || return 1
+
+    echo 'Successfully updated the system'
     rm "${LOG_FILE}"
   }
 
