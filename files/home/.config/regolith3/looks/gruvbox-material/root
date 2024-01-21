@@ -21,11 +21,10 @@ gtk.icon_theme_name: Yaru-prussiangreen-dark
 ! --------------------------------------------
 
 #define gtk_font_name Ubuntu Regular 10
-#define gtk_document_font_name Ubuntu Regular 10
 #define gtk_monospace_font_name FiraMono Nerd Font 10
 
 gtk.font_name: gtk_font_name
-gtk.document_font_name: gtk_document_font_name
+gtk.document_font_name: gtk_font_name
 gtk.monospace_font_name: gtk_monospace_font_name
 
 ! --------------------------------------------
