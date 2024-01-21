@@ -1,0 +1,20 @@
+# git | https://launchpad.net/~git-core/+archive/ubuntu/ppa
+Types: deb
+URIs: http://ppa.launchpad.net/git-core/ppa/ubuntu/
+Suites: mantic
+Components: main
+Architectures: amd64
+Signed-By:
+ -----BEGIN PGP PUBLIC KEY BLOCK-----
+ .
+ mI0ESXjaGwEEAMA26F3+mnRW8uRqASMsEa5EsmgvUpLD7EKpC7903OpiMGSvZ2sE
+ 34g7W6nUQY0R//AZS2iW4ZXfvdhQTQuuPlHM6Q3iUAt+nyXcf9xBlscs8Gm722u4
+ jAtFtBS4BMQRhRRfWTHwJIOM6OpGIccjPe8pQfIeoRxkKJxlehzw2mU1ABEBAAGw
+ DAAAZ3BnAQAAAAAAALQoTGF1bmNocGFkIFBQQSBmb3IgVWJ1bnR1IEdpdCBNYWlu
+ dGFpbmVyc7AMAABncGcCAAAAAAAAiLYEEwECACAFAkl42hsCGwMGCwkIBwMCBBUC
+ CAMEFgIDAQIeAQIXgAAKCRChcV2I4d8fJP8zA/0SgTI2r7xZe9WAWs0jhpdmH0rG
+ YkfwDbG8t/q1GlC2/Lscwh1wEJ5R+b3bS0j68miwb8wlPAtwtNqjU/I0WnFNu+ds
+ 7ApAotUi0Ujl3SPwEyR82uWk72Ffd60yEwYVOLCUHivUVtArWg0QMSbJ/w6+id5S
+ /3PZvXE+XxacTiLBeLAGAANncGcA
+ =uA2A
+ -----END PGP PUBLIC KEY BLOCK-----

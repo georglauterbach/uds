@@ -1,0 +1,36 @@
+# NeoVIM | https://launchpad.net/~neovim-ppa/+archive/ubuntu/unstable
+Types: deb
+URIs: https://ppa.launchpadcontent.net/neovim-ppa/unstable/ubuntu/
+Suites: mantic
+Components: main
+Architectures: amd64
+Signed-By:
+ -----BEGIN PGP PUBLIC KEY BLOCK-----
+ .
+ mQINBFSJzaMBEACxpSOtdO1I0N1Ett33RszDCmK7erP77pcABb6c/7fHhkqoaOq0
+ EHSUnn2STQPopBtTuVY08waV2AWnGcB664pGTJ3r2c8CSBY21RweHbzyDqPG/gGw
+ jpJdrTPXlIUrTn7DI2y36sarn1cYel4dw+jdPnhtJ34xU6/EffS2532q9cHlGCmS
+ gwtmZ1cHvW2XjJj7UPpc7t2NnQ6NYNeRoKSVh2Xf8kvV74IKdkJFb62iTd7aNbCg
+ 83m4dBA1nI6mC6KP+rmQHcDtN8tZc8cQlN0ho7U3CMtLPrCdhDFl+vXEj2EbQDIn
+ GTCi4pmQYirPf49i3CV3as6xGxshuxF9dbfa11/QgMcHrnO2mw4WzFrBW2iT6EDh
+ KlxVskPNZYZlU8eJr46KdCj01YfPkXtSqBHSjmlnnDSUu+WwT2j07gwO4lAnZCWE
+ 2MXJaxi6y+0rijbH89uw8mXOq4Q04/9cvn4AFzRaCnB1PnLWOhoqtuXUvp4dCBK0
+ PEtfFQcSG7DL3tRQJIJ1nasVsy+6NJ5QUdexFxvZp7wYsEerrdZTEwn37vYL4oXa
+ hD3lzdNBfQgmdWcXysjjq8OcQj6EI4WT033q/QGkoueH2w45OWL8bORN1ALnJO9W
+ rwIfHpnfiAIc+GLSZgcrEJo+KQ38FcPhIkdLEMzqLt3U1z4iO5bnxeR1kwARAQAB
+ sAwAAGdwZwEAAAAAAAC0IUxhdW5jaHBhZCBQUEEgZm9yIE5lb3ZpbSBQUEEgVGVh
+ bbAMAABncGcCAAAAAAAAiQI4BBMBAgAiBQJUic2jAhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgAAKCRBV+W/PgjG23ZJgD/oC0YnFPkjkPNwMv8QaaePX1ik4CQsx
+ 2BTPIwHUR+eVN/6BMVWsb8qgTYjktPMrbDznXCztk3dms1swOFZYWR4ckKlfwEli
+ tLwXHjNhu747E8EvEeF+b5CCLfjjfzyYP16drr/uAI7E7A27eT0PkeEFwNYxCtcH
+ jlnfkJvMZBABnUdwsPn0nidfhgUEWHP1/a+4vRpAEjsvud2NxrWcA/T+3LZk3AsZ
+ ShYSVgmLrlsyho+BR1j7zeL3HURXB8l7Gl6+dQgJNcugdeK5b4lh4m41V0tDE5So
+ 37yBd8Eec/Gm45fh9NR8MZm9YvhrbDH4aEY4eC0vfU5Ih2t09daJNJ4iTfDjn3uZ
+ GP78LrRS8zgcDsaoTGVRiqubwoioff2r4jiH8O0m4bdYtvtPhB+hh5onZ2htalLX
+ tK4aTsCYMsUsObBUI4joZ6JJ+WADprMUPUAnfmkVjRmFHsxL1//tiYS1mQHsA9gA
+ m9YNiuS817fKfNjE939szjaF6ith9krkmP1avyzMhKEXOtaNuJTLigxy/iYE2X6D
+ VvywdZxHoXJWPoJNEdvwexdnHBIlNH4mHXERDyhi8EUAZw8dxCNBBU42Unso+ZKq
+ L0dGLR+doFTxHQ8z1zkqgZgaPQg3QMsVFOOTzNgPNapWcaBQgWA4AQF1alHUXzYp
+ CljYrM4eEROEN7AGAANncGcA
+ =nqXp
+ -----END PGP PUBLIC KEY BLOCK-----
