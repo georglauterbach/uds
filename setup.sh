@@ -22,15 +22,18 @@ shopt -s inherit_errexit
 
 # shellcheck source=/dev/null
 # shellcheck disable=SC2312
-if ! source <(curl -qsSfL --connect-timeout 3 https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh 2>/dev/null)
+if ! source <(wget -q -O- https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh 2>/dev/null)
 then
-  echo -e "[  \e[91mERROR\e[0m  ] Could not access GitHub - please run 'curl -qsSfL --connect-timeout 3 https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh' manually and resolve the errors" >&2
+  echo -e "[  \e[91mERROR\e[0m  ] Could not access GitHub - please run 'wget -q -O- https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh' manually and resolve the errors" >&2
   exit 2
 fi
 
 function purge_snapd() {
   command -v snap &>/dev/null || return 0
   log 'inf' "Purging 'snapd'"
+
+  killall snap
+  systemctl stop snapd
 
   until [[ $(snap list 2>&1 || :) == 'No snaps'*'installed'* ]]
   do
@@ -50,25 +53,33 @@ function purge_snapd() {
 function add_ppas() {
   log 'inf' 'Adding PPAs'
 
-  curl -qsSfL -o /etc/apt/sources.list "${GITHUB_RAW_URL}apt/sources.list"
-  curl -qsSfL -o /etc/apt/sources.list.d/uds.list "${GITHUB_RAW_URL}apt/uds.list"
+  wget -q -O /etc/apt/sources.list "${GITHUB_RAW_URL}apt/sources.list"
+
+  local PPA_SOURCES_FILES=(
+    'alacritty'
+    'cryptomator'
+    'eza'
+    'git-core'
+    'mozillateam'
+    'neovim-unstable'
+    'regolith'
+    'vscode'
+  )
+
+  local PPA_SOURCE_FILE
+  for PPA_SOURCE_FILE in "${PPA_SOURCES_FILES[@]}"
+  do
+    wget -q -O /etc/apt/sources.list.d/${PPA_SOURCE_FILE}.sources "${GITHUB_RAW_URL}apt/${PPA_SOURCE_FILE}.sources"
+  done
 
   if [[ $(uname -m || :) != 'x86_64' ]]
   then
     log 'deb' 'Fixing sources for ARM64'
-    sed -i -E 's|(arch=)amd64|\1arm64|g' /etc/apt/sources.list /etc/apt/sources.list.d/uds.list
+    for PPA_SOURCE_FILE in /etc/apt/sources.list.d/*
+    do
+      sed -i -E 's|(Architectures=)amd64|\1arm64|g' "${PPA_SOURCE_FILE}"
+    done
   fi
-
-  local GPG_KEY_FILES=('alacritty' 'eza' 'git-core' 'mozillateam' 'neovim-unstable' 'regolith' 'vscode')
-  readonly -a GPG_KEY_FILES
-
-  log 'deb' 'Adding GPG files'
-  for GPG_FILE in "${GPG_KEY_FILES[@]}"
-  do
-    curl -qsSfL -o "/etc/apt/trusted.gpg.d/${GPG_FILE}.gpg" "${GITHUB_RAW_URL}apt/gpg/${GPG_FILE}.gpg"
-  done
-
-  log 'deb' 'Finished adding PPAs'
 
   log 'deb' 'Overriding Firefox PPA priority to not use the Snap-package'
   cat >/etc/apt/preferences.d/mozilla-firefox << "EOM"
@@ -80,20 +91,21 @@ EOM
 Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
 EOM
 
-  log 'deb' 'Applying VS Code patch'
-  local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
-  if [[ -f ${CODE_SOURCES_FILE} ]]
-  then
-    echo '# deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >"${CODE_SOURCES_FILE}"
-  fi
-
+  log 'deb' 'Finished adding PPAs'
   log 'inf' 'Updating package signatures'
   apt-get -qq update
 }
 
 function install_packages() {
+  log 'deb' 'Upgrading packages'
+  apt-get -qq upgrade
+  apt-get -qq dist-upgrade
+
   log 'deb' 'Removing update manager'
-  apt-get remove -qq update-manager-core
+  apt-get -qq remove update-manager-core
+
+  log 'deb' 'Removing no longer required packages'
+  apt-get -qq autoremove
 
   log 'deb' 'Installing packages now'
   local PACKAGES=(
@@ -117,21 +129,15 @@ function install_packages() {
     'gnome-screenshot'
     'gnome-terminal'
     'gnome-tweaks'
-    'gcc'
     'gnupg2'
-    'linux-generic-hwe-22.04'
-    'make'
     'nautilus'
     'neofetch'
     'neovim'
-    'owncloud-client'
+    'nextcloud-desktop'
     'p7zip-full'
-    'picom'
-    'pkg-config'
-    'polybar'
     'python3-neovim'
     'regolith-desktop'
-    'regolith-session-flashback'
+    'regolith-session-sway'
     'regolith-look-gruvbox'
     'regolith-wm-user-programs'
     'ripgrep'
@@ -147,15 +153,24 @@ function install_packages() {
     exit 1
   fi
 
+  log 'deb' 'Applying VS Code patch'
+  local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
+  if [[ -f ${CODE_SOURCES_FILE} ]]
+  then
+    echo '# deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >"${CODE_SOURCES_FILE}"
+  fi
+
   log 'deb' 'Removing unwanted packages now'
-  apt-get remove -qq i3xrocks regolith-i3xrocks-config
+  apt-get -qq remove --purge i3xrocks regolith-i3xrocks-config
 
   log 'deb' 'Removing unwanted packages now'
   apt-get -qq autoremove
 
   log 'deb' 'Installing Starship prompt'
-  curl -qsSfL https://starship.rs/install.sh >install_startship.sh
+  wget -q -O install_starship.sh https://starship.rs/install.sh
   sh install_startship.sh --force >/dev/null
+
+  log 'inf' 'To install ble.sh, visit https://github.com/akinomyoga/ble.sh'
 
   log 'deb' 'Finished installing packages'
 }
@@ -184,6 +199,11 @@ function place_configuration_files() {
   readonly REGOLITH_DIR='.config/regolith3'
   local CONFIG_FILES=(
     '.bashrc'
+    '.config/alacritty/alacritty.toml'
+    '.config/alacritty/10-general.toml'
+    '.config/alacritty/20-font.toml'
+    '.config/alacritty/30-colors.toml'
+    '.config/alacritty/40-bindings.toml'
     '.config/bash/10-setup.sh'
     '.config/bash/30-extra_programs.sh'
     '.config/bash/80-aliases.sh'
@@ -191,11 +211,6 @@ function place_configuration_files() {
     '.config/bash/ble.conf'
     '.config/bash/starship.toml'
     '.config/nvim/init.lua'
-    '.config/alacritty/alacritty.yml'
-    '.config/alacritty/10-general.yml'
-    '.config/alacritty/20-font.yml'
-    '.config/alacritty/30-colors.yml'
-    '.config/alacritty/40-bindings.yml'
     '.config/polybar/launch.sh'
     '.config/polybar/polybar.conf'
     "${REGOLITH_DIR}/i3/config.d/98-bindings"
@@ -210,14 +225,14 @@ function place_configuration_files() {
   for FILE in "${CONFIG_FILES[@]}"
   do
     mkdir -p "$(dirname "${HOME}/${FILE}")"
-    curl -qsSfL -o "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
+    wget -q -O "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
   done
 
   sed -i "s|HOME|${HOME}|g" "${HOME}/${REGOLITH_DIR}/Xresources"
   chown "${USER}:${USER}" "${HOME}/.bashrc"
   chown -R "${USER}:${USER}" "${HOME}/.config"
-  chmod +x "${HOME}/.config/polybar/launch.sh"
 
+  log 'inf' 'To change the bookmarks in Nautilus, edit ~/.config/user-firs.dirs, ~/.config/gtk-3.0/bookmarks, and /etc/xdg/user-dirs.defaults'
   log 'deb' 'Finished placing configuration files'
 }
 
