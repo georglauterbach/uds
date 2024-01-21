@@ -7,7 +7,7 @@
   "Exclude": [
     "\\.md$",
     "^\\.gitmodules$",
-    "\\.gpg$"
+    "\\.sources$"
   ],
   "AllowedContentTypes": [],
   "PassedFiles": [],

@@ -7,7 +7,7 @@ A simple setup script to
 1. configure the desktop theme and style;
 2. place miscellaneous other configuration files.
 
-UDS configures [_Ubuntu_ 22.04 _Jammy Jellyfish_][ubuntu-22.04] by installing various packages and placing (new) configuration files. The desktop environment used is [_Regolith Linux_ 3][regolith], which combines the [GNOME] desktop environment and [i3]. The theme UDS employs is [`sainnhe/gruvbox-material`](https://github.com/sainnhe/gruvbox-material), a modified version of [`morhetz/gruvbox`](https://github.com/morhetz/gruvbox).
+UDS configures [_Ubuntu_ 23.10 _Mantic Minotaur_][ubuntu-23.10] by installing various packages and placing (new) configuration files. The desktop environment used is [_Regolith Linux_ 3][regolith], which combines the [GNOME] desktop environment and [i3]. The theme UDS employs is [`sainnhe/gruvbox-material`](https://github.com/sainnhe/gruvbox-material), a modified version of [`morhetz/gruvbox`](https://github.com/morhetz/gruvbox).
 
 ![Desktop](files/.show-off/desktop.gif)
 
@@ -18,7 +18,7 @@ The script will
 3. install basic packages;
 4. place appropriate configuration files.
 
-[ubuntu-22.04]: https://releases.ubuntu.com/22.04/
+[ubuntu-23.10]: https://releases.ubuntu.com/23.10/
 [regolith]: https://regolith-desktop.com/
 [GNOME]: https://www.gnome.org/
 [i3]: https://i3wm.org/
