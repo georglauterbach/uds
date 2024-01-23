@@ -1,30 +1,16 @@
 #! /usr/bin/env bash
 
-# version       0.1.4
+# version       0.2.0
 # sourced by    ${HOME}/.bashrc
 # task          provides helper and wrapper functions
 #               for common tasks and commands
 
 function __uds__declare_with_helpers() {
   declare -f "${@}"              \
-    __uds__split_into_array      \
     __uds__is_bash_function      \
     __uds__command_exists        \
     __uds__execute_real_command  \
     do_as_root
-}
-
-# ref: https://stackoverflow.com/a/45201229
-function __uds__split_into_array() {
-  local ARRAY_NAME=${1:?Array name is required}
-  local STRING_TO_SPLIT=${2:?String to split is required}
-  local DELIMITER=${3:-:}
-
-  readarray \
-    -t -d '' \
-    "${ARRAY_NAME}" \
-    < <(awk "{ gsub(/${DELIMITER}/,\"\0\"); print; }" <<< "${STRING_TO_SPLIT}${DELIMITER}")
-  unset 'a[-1]'
 }
 
 function __uds__is_bash_function() {
@@ -36,12 +22,11 @@ function __uds__command_exists() {
 }
 
 function __uds__execute_real_command() {
-  local COMMAND POSSIBLE_PATHS DIR FULL_COMMAND
+  local COMMAND DIR FULL_COMMAND
   COMMAND=${1:?Command name required}
   shift 1
 
-  __uds__split_into_array POSSIBLE_PATHS "${PATH}"
-  for DIR in "${POSSIBLE_PATHS[@]}"
+  for DIR in ${PATH//:/ }
   do
     FULL_COMMAND="${DIR}/${COMMAND}"
     [[ -x ${FULL_COMMAND} ]] && { ${FULL_COMMAND} "${@}" ; return ${?} ; }
