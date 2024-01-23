@@ -130,6 +130,7 @@ function install_packages() {
     'gnome-terminal'
     'gnome-tweaks'
     'gnupg2'
+    'nala'
     'nautilus'
     'neofetch'
     'neovim'
