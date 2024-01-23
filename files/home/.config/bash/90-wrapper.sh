@@ -5,12 +5,43 @@
 # task          provides helper and wrapper functions
 #               for common tasks and commands
 
-function __execute_real_command() {
-  local DIR COMMAND FULL_COMMAND
+function __uds__declare_with_helpers() {
+  declare -f "${@}"              \
+    __uds__split_into_array      \
+    __uds__is_bash_function      \
+    __uds__command_exists        \
+    __uds__execute_real_command  \
+    do_as_root
+}
+
+# ref: https://stackoverflow.com/a/45201229
+function __uds__split_into_array() {
+  local ARRAY_NAME=${1:?Array name is required}
+  local STRING_TO_SPLIT=${2:?String to split is required}
+  local DELIMITER=${3:-:}
+
+  readarray \
+    -t -d '' \
+    "${ARRAY_NAME}" \
+    < <(awk "{ gsub(/${DELIMITER}/,\"\0\"); print; }" <<< "${STRING_TO_SPLIT}${DELIMITER}")
+  unset 'a[-1]'
+}
+
+function __uds__is_bash_function() {
+  [[ $(type -t "${1:?Name of type to check is required}") == 'function' ]]
+}
+
+function __uds__command_exists() {
+  command -v "${1:-}" &>/dev/null
+}
+
+function __uds__execute_real_command() {
+  local COMMAND POSSIBLE_PATHS DIR FULL_COMMAND
   COMMAND=${1:?Command name required}
   shift 1
 
-  for DIR in {/usr{/local,},}/{,s}bin
+  __uds__split_into_array POSSIBLE_PATHS "${PATH}"
+  for DIR in "${POSSIBLE_PATHS[@]}"
   do
     FULL_COMMAND="${DIR}/${COMMAND}"
     [[ -x ${FULL_COMMAND} ]] && { ${FULL_COMMAND} "${@}" ; return ${?} ; }
@@ -20,46 +51,52 @@ function __execute_real_command() {
   return 1
 }
 
-function __command_exists() {
-  command -v "${1:-}" &>/dev/null
-}
+function do_as_root() {
+  local SU_COMMAND
 
-function __do_as_root() {
-  if __command_exists 'doas'
+  if __uds__command_exists 'doas'
   then
-    doas "${@}"
-  elif __command_exists 'sudo'
+    SU_COMMAND='doas'
+  elif __uds__command_exists 'sudo'
   then
-    sudo "${@}"
+    SU_COMMAND='sudo'
   else
     echo 'Could not find program to execute command as root'
+    return 1
+  fi
+
+  if __uds__is_bash_function "${1:?Command is required}"
+  then
+    ${SU_COMMAND} bash -c "$(__uds__declare_with_helpers "${1}") ; ${*}"
+  else
+    ${SU_COMMAND} "${@}"
   fi
 }
 
 function ls() {
-  if __command_exists 'eza'
+  if __uds__command_exists 'eza'
   then
     eza --header --long --binary --group --classify --git --extended --group-directories-first "${@}"
   else
-    __execute_real_command 'ls' "${@}"
+    __uds__execute_real_command 'ls' "${@}"
   fi
 }
 
 function cat() {
-  if __command_exists 'batcat'
+  if __uds__command_exists 'batcat'
   then
     batcat --theme="gruvbox-dark" --paging=never --italic-text=always "${@}"
   else
-    __execute_real_command 'cat' "${@}"
+    __uds__execute_real_command 'cat' "${@}"
   fi
 }
 
 function grep() {
-  if __command_exists 'rg'
+  if __uds__command_exists 'rg'
   then
     rg -N "${@}"
   else
-    __execute_real_command 'grep' "${@}"
+    __uds__execute_real_command 'grep' "${@}"
   fi
 }
 
@@ -70,19 +107,19 @@ function git() {
       git pull
       git submodule update
       ;;
-    ( * ) __execute_real_command git "${@}" ;;
+    ( * ) __uds__execute_real_command git "${@}" ;;
   esac
 }
 
 function apt() {
-  local PROGRAM
-  __command_exists 'nala' && PROGRAM='nala' || PROGRAM='apt'
+  local PROGRAM='apt'
+  __uds__command_exists 'nala' && PROGRAM='nala'
 
-  if [[ ${1:-} == 'show' ]]
+  if [[ ${1:-} =~ ^show|search$ ]]
   then
-    __execute_real_command "${PROGRAM}" "${@}"
+    __uds__execute_real_command "${PROGRAM}" "${@}"
   else
-    __do_as_root "${PROGRAM}" "${@}"
+    do_as_root "${PROGRAM}" "${@}"
   fi
 }
 
@@ -91,7 +128,7 @@ function shutn { shutdown now ; }
 # stolen, ahh adopted from
 # https://github.com/casperklein/bash-pack/blob/master/x
 function x() {
-  [[ -f ${1:-} ]] || { echo "File '${1}' not found" >&2 ; return 1 ; }
+  [[ -f ${1:-} ]] || { echo "File '${1:-}' not found" >&2 ; return 1 ; }
 
   case "${1}" in
     ( *.7z )      7za x "${1}"       ;;
@@ -115,37 +152,4 @@ function x() {
       return 1
       ;;
   esac
-
-  return ${?}
-}
-
-function update() {
-  # shellcheck disable=SC2317
-  function __update() {
-    local QUIET OPTIONS LOG_FILE
-    QUIET='-qq'
-    OPTIONS=('--yes' '--assume-yes' '--allow-unauthenticated' '--allow-change-held-packages')
-    LOG_FILE=$(mktemp)
-
-    function __run_command() {
-      if ! "${@}" &>"${LOG_FILE}"
-      then echo "error" >&2 ; cat "${LOG_FILE}" >&2 ; return 1
-      else echo "finished"
-      fi
-    }
-
-    printf 'Checking for package updates... '
-    __run_command apt-get "${QUIET}" update || return 1
-
-    echo -ne 'Installing package updates... '
-    __run_command apt-get --with-new-pkgs "${QUIET}" "${OPTIONS[@]}" upgrade || return 1
-
-    echo -ne 'Removing orphaned packages... '
-    __run_command apt-get "${QUIET}" "${OPTIONS[@]}" autoremove || return 1
-
-    echo 'Successfully updated the system'
-    rm "${LOG_FILE}"
-  }
-
-  __do_as_root bash -c "$(declare -f __update) ; __update"
 }
