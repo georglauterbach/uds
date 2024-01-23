@@ -1,16 +1,16 @@
 ! Windows
 
-wm.client.focused.color.border: color_yellow
+wm.client.focused.color.border: color_sage
 wm.client.focused.color.background: color_base01
 wm.client.focused.color.text: color_base3
-wm.client.focused.color.indicator: color_yellow
-wm.client.focused.color.child_border: color_yellow
+wm.client.focused.color.indicator: color_sage
+wm.client.focused.color.child_border: color_sage
 
-wm.client.focused_inactive.color.border: color_green
+wm.client.focused_inactive.color.border: color_yellow
 wm.client.focused_inactive.color.background: color_base01
 wm.client.focused_inactive.color.text: color_base3
-wm.client.focused_inactive.color.indicator: color_green
-wm.client.focused_inactive.color.child_border: color_green
+wm.client.focused_inactive.color.indicator: color_yellow
+wm.client.focused_inactive.color.child_border: color_yellow
 
 wm.client.unfocused.color.border: color_base01
 wm.client.unfocused.color.background: color_base01

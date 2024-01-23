@@ -13,8 +13,8 @@ regolith.wallpaper.file: ~/.config/regolith3/wallpaper.png
 regolith.lockscreen.wallpaper.file: ~/.config/regolith3/wallpaper.png
 regolith.wallpaper.options: stretched
 
-gtk.theme_name: Yaru-prussiangreen-dark
-gtk.icon_theme_name: Yaru-prussiangreen-dark
+gtk.theme_name: Yaru-sage-dark
+gtk.icon_theme_name: Yaru-sage-dark
 
 ! --------------------------------------------
 ! -- Fonts
@@ -48,6 +48,7 @@ gtk.monospace_font_name: gtk_monospace_font_name
 #define color_red      #EA6962
 #define color_green    #A9B665
 #define color_yellow   #D8A657
+#define color_sage     #657B69
 #define color_blue     #659F92
 #define color_violet   #C86580
 #define color_cyan     #6BA163
