@@ -14,7 +14,7 @@ function __uds__declare_with_helpers() {
 }
 
 function __uds__is_bash_function() {
-  [[ $(type -t "${1:?Name of type to check is required}") == 'function' ]]
+  [[ $(type -t "${1:?Name of type to check is required}" || :) == 'function' ]]
 }
 
 function __uds__command_exists() {
@@ -52,6 +52,7 @@ function do_as_root() {
 
   if __uds__is_bash_function "${1:?Command is required}"
   then
+    # shellcheck disable=SC2312
     ${SU_COMMAND} bash -c "$(__uds__declare_with_helpers "${1}") ; ${*}"
   else
     ${SU_COMMAND} "${@}"

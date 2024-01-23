@@ -69,7 +69,7 @@ function add_ppas() {
   local PPA_SOURCE_FILE
   for PPA_SOURCE_FILE in "${PPA_SOURCES_FILES[@]}"
   do
-    wget -q -O /etc/apt/sources.list.d/${PPA_SOURCE_FILE}.sources "${GITHUB_RAW_URL}apt/${PPA_SOURCE_FILE}.sources"
+    wget -q -O "/etc/apt/sources.list.d/${PPA_SOURCE_FILE}.sources" "${GITHUB_RAW_URL}apt/${PPA_SOURCE_FILE}.sources"
   done
 
   if [[ $(uname -m || :) != 'x86_64' ]]
