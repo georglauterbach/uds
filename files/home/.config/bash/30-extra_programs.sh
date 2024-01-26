@@ -35,10 +35,10 @@ function setup_ble() {
     if [[ -e ${BLE_CONFIG_FILE} ]]
     then
       # shellcheck source=/dev/null
-      source "${BLE_SOURCE}" --noattach --rcfile "${BLE_CONFIG_FILE}"
+      source "${BLE_SOURCE}" --attach=none --rcfile "${BLE_CONFIG_FILE}"
     else
       # shellcheck source=/dev/null
-      source "${BLE_SOURCE}" --noattach
+      source "${BLE_SOURCE}" --attach=none
     fi
 
     if command -v fzf &>/dev/null
@@ -50,16 +50,10 @@ function setup_ble() {
 }
 
 function setup_misc_programs() {
-  if command -v just &>/dev/null
-  then
-    alias j='just'
-    complete -F _just -o bashdefault -o default j
-  fi
-
   if command -v kubectl &>/dev/null
   then
     alias k='kubectl'
-    complete -o default -F __start_kubectl k
+    complete -o default -o bashdefault -F __start_kubectl k
   fi
 
   if command -v polybar &>/dev/null
