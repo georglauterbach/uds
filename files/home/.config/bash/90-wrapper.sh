@@ -1,67 +1,12 @@
 #! /usr/bin/env bash
 
-# version       0.2.0
+# version       0.3.0
 # sourced by    ${HOME}/.bashrc
 # task          provides helper and wrapper functions
 #               for common tasks and commands
 
-function __uds__declare_with_helpers() {
-  declare -f "${@}"              \
-    __uds__is_bash_function      \
-    __uds__command_exists        \
-    __uds__execute_real_command  \
-    do_as_root
-}
-
-function __uds__is_bash_function() {
-  [[ $(type -t "${1:?Name of type to check is required}" || :) == 'function' ]]
-}
-
-function __uds__command_exists() {
-  command -v "${1:-}" &>/dev/null
-}
-
-function __uds__execute_real_command() {
-  local COMMAND DIR FULL_COMMAND
-  COMMAND=${1:?Command name required}
-  shift 1
-
-  for DIR in ${PATH//:/ }
-  do
-    FULL_COMMAND="${DIR}/${COMMAND}"
-    [[ -x ${FULL_COMMAND} ]] && { ${FULL_COMMAND} "${@}" ; return ${?} ; }
-  done
-
-  echo "Command '${COMMAND}' not found" >&2
-  return 1
-}
-
-function do_as_root() {
-  local SU_COMMAND
-
-  if __uds__command_exists 'doas'
-  then
-    SU_COMMAND='doas'
-  elif __uds__command_exists 'sudo'
-  then
-    SU_COMMAND='sudo'
-  else
-    echo 'Could not find program to execute command as root'
-    return 1
-  fi
-
-  if __uds__is_bash_function "${1:?Command is required}"
-  then
-    # shellcheck disable=SC2312
-    ${SU_COMMAND} bash -c "$(__uds__declare_with_helpers "${1}") ; ${*}"
-  else
-    ${SU_COMMAND} "${@}"
-  fi
-}
-
 function ls() {
-  if __uds__command_exists 'eza'
-  then
+  if __command_exists 'eza'; then
     eza --header --long --binary --group --classify --git --extended --group-directories-first "${@}"
   else
     __uds__execute_real_command 'ls' "${@}"
@@ -69,8 +14,7 @@ function ls() {
 }
 
 function cat() {
-  if __uds__command_exists 'batcat'
-  then
+  if __command_exists 'batcat'; then
     batcat --theme="gruvbox-dark" --paging=never --italic-text=always "${@}"
   else
     __uds__execute_real_command 'cat' "${@}"
@@ -78,8 +22,7 @@ function cat() {
 }
 
 function grep() {
-  if __uds__command_exists 'rg'
-  then
+  if __command_exists 'rg'; then
     rg -N "${@}"
   else
     __uds__execute_real_command 'grep' "${@}"
@@ -99,7 +42,7 @@ function git() {
 
 function apt() {
   local PROGRAM='apt'
-  __uds__command_exists 'nala' && PROGRAM='nala'
+  __command_exists 'nala' && PROGRAM='nala'
 
   if [[ ${1:-} =~ ^show|search$ ]]
   then

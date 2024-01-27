@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# version       0.2.3
+# version       0.2.4
 # sourced by    ${HOME}/.bashrc
 # task          provides Bash aliases
 
@@ -19,6 +19,9 @@ alias gp='git pull'
 
 alias v='nvim'
 alias sv='sudo nvim'
+
+alias k='kubectl'
+alias rp='killall polybar && ${HOME}/.config/polybar/launch.sh'
 
 alias ..='cd ..'
 alias ...='cd ../..'
