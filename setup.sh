@@ -110,6 +110,7 @@ function install_packages() {
   log 'deb' 'Installing packages now'
   local PACKAGES=(
     'alacritty'
+    'bash-completion'
     'bat'
     'btop'
     'build-essential'
