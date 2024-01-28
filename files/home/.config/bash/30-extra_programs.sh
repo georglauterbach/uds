@@ -32,8 +32,6 @@ function setup_ble() {
       source "${BLE_SOURCE}" --attach=none
     fi
 
-    shopt -s progcomp_alias
-
     if __command_exists fzf; then
       ble-import -d integration/fzf-completion
       ble-import -d integration/fzf-key-bindings
@@ -43,6 +41,8 @@ function setup_ble() {
 
 function setup_misc_programs() {
   __command_exists kubectl && alias k='kubectl'
+  complete -o default -F __start_kubectl k
+
   __command_exists polybar && alias rp='killall polybar && ${HOME}/.config/polybar/launch.sh'
 }
 
