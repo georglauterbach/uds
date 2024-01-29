@@ -46,7 +46,7 @@ function setup_misc_programs() {
   __command_exists polybar && alias rp='killall polybar && ${HOME}/.config/polybar/launch.sh'
 }
 
-for __FUNCTION in 'fzf' 'rust' 'ble'; do
+for __FUNCTION in 'fzf' 'rust' 'ble' 'misc_programs'; do
   "setup_${__FUNCTION}"
   unset "setup_${__FUNCTION}"
 done
