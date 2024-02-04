@@ -54,4 +54,4 @@ You might want to take a look at these outstanding projects that are written in 
 - [`Canop/bacon`](https://github.com/Canop/bacon) - background Rust code checker \[`cargo binstall --no-confirm --locked bacon`\]
 - [`zellij-org/zellij`](https://github.com/zellij-org/zellij) - terminal workspace (multiplexer) \[`cargo binstall --no-confirm --locked zellij`\]
 - [`extrawurst/gitui`](https://github.com/extrawurst/gitui) - blazing fast terminal-UI for git \[`cargo binstall --no-confirm --locked gitui`\]
-- [`sigmaSd/IRust`](https://<github.com/sigmaSd/IRust) -  cross-platform Rust Repl \[`cargo binstall --no-confirm --locked cargo-show-asm cargo-expand irust`\]
+- [`sigmaSd/IRust`](https://<github.com/sigmaSd/IRust) - cross-platform Rust REPL \[`cargo binstall --no-confirm --locked cargo-show-asm cargo-expand irust`\]
