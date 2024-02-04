@@ -16,8 +16,11 @@ function setup_fzf() {
 }
 
 function setup_rust() {
-  # shellcheck source=/dev/null
-  [[ -d ${HOME}/.cargo ]] && source "${HOME}/.cargo/env"
+  if [[ -d ${HOME}/.cargo ]]; then
+    # shellcheck source=/dev/null
+    source "${HOME}/.cargo/env"
+    __command_exists sccache && export RUSTC_WRAPPER='sccache'
+  fi
 }
 
 function setup_ble() {
@@ -40,8 +43,10 @@ function setup_ble() {
 }
 
 function setup_misc_programs() {
-  __command_exists kubectl && alias k='kubectl'
-  complete -o default -F __start_kubectl k
+  if __command_exists kubectl; then
+    alias k='kubectl'
+    complete -o default -F __start_kubectl k
+  fi
 
   __command_exists polybar && alias rp='killall polybar && ${HOME}/.config/polybar/launch.sh'
 }
