@@ -55,3 +55,4 @@ You might want to take a look at these outstanding projects that are written in 
 - [`zellij-org/zellij`](https://github.com/zellij-org/zellij) - terminal workspace (multiplexer) \[`cargo binstall --no-confirm --locked zellij`\]
 - [`extrawurst/gitui`](https://github.com/extrawurst/gitui) - blazing fast terminal-UI for git \[`cargo binstall --no-confirm --locked gitui`\]
 - [`sigmaSd/IRust`](https://<github.com/sigmaSd/IRust) - cross-platform Rust REPL \[`cargo binstall --no-confirm --locked cargo-show-asm cargo-expand irust`\]
+- [`casey/just`](https://github.com/casey/just) - a command runner \[`cargo binstall --no-confirm --locked just`\]
