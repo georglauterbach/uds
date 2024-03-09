@@ -201,6 +201,7 @@ function place_configuration_files() {
   readonly REGOLITH_DIR='.config/regolith3'
   local CONFIG_FILES=(
     '.bashrc'
+    '.tmux.conf'
     '.config/alacritty/alacritty.toml'
     '.config/alacritty/10-general.toml'
     '.config/alacritty/20-font.toml'
@@ -215,6 +216,9 @@ function place_configuration_files() {
     '.config/nvim/init.lua'
     '.config/polybar/launch.sh'
     '.config/polybar/polybar.conf'
+    '.config/tmux/30-design.conf'
+    '.config/tmux/40-keys.conf'
+    '.config/tmux/50-plugins.conf'
     "${REGOLITH_DIR}/i3/config.d/98-bindings"
     "${REGOLITH_DIR}/i3/config.d/99-workspaces"
     "${REGOLITH_DIR}/looks/gruvbox-material/i3-wm"
