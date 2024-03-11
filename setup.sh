@@ -224,7 +224,7 @@ function place_configuration_files() {
     "${REGOLITH_DIR}/looks/gruvbox-material/i3-wm"
     "${REGOLITH_DIR}/looks/gruvbox-material/root"
     "${REGOLITH_DIR}/picom.conf"
-    "${REGOLITH_DIR}/wallpaper.png"
+    "${REGOLITH_DIR}/wallpaper.jpg"
     "${REGOLITH_DIR}/Xresources"
   )
 

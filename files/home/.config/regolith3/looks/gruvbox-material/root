@@ -9,8 +9,8 @@ regolith.look.loader: /usr/share/regolith-look/default_loader.sh
 ! -- Theme elements
 ! --------------------------------------------
 
-regolith.wallpaper.file: ~/.config/regolith3/wallpaper.png
-regolith.lockscreen.wallpaper.file: ~/.config/regolith3/wallpaper.png
+regolith.wallpaper.file: ~/.config/regolith3/wallpaper.jpg
+regolith.lockscreen.wallpaper.file: ~/.config/regolith3/wallpaper.jpg
 regolith.wallpaper.options: stretched
 
 gtk.theme_name: Yaru-sage-dark
