@@ -4,9 +4,6 @@
 
 UDS configures Ubuntu by installing various packages and placing (new) configuration files. UDS will (optionally) completely remove `snapd`, setup Personal Package Archives (PPAs), install basic packages, and place configuration files.
 
-[image::hyperlink]: https://img.freepik.com/free-photo/natures-beauty-shines-multi-colored-floral-decoration-generative-ai_188544-8615.jpg?w=1800&t=st=1710173895~exp=1710174495~hmac=384bff9ad2e1aded5ac611f9bddc9539d40f8d5050dce67e23a648ccab6ee095
-[image::referral]: https://www.freepik.com/free-photo/natures-beauty-shines-multi-colored-floral-decoration-generative-ai_40948330.htm#page=3&query=cool%20wallpaper&position=19&from_view=keyword&track=ais&uuid=5e656229-57f2-41c7-871d-2fef44a20e21
-
 | Property            | UDS' Choice                                  |
 | :------------------ | :------------------------------------------- |
 | Linux distribution  | [Ubuntu Desktop 23.10][ubuntu-23.10::web]    |
@@ -37,13 +34,13 @@ $ reboot
 
 You might want to take a look at the following outstanding projects.
 
-### :star2: General
+### General
 
 1. [`junegunn/fzf`](https://github.com/junegunn/fzf): general-purpose command-line fuzzy finder
 2. [`akinomyoga/ble.sh`](https://github.com/akinomyoga/ble.sh): command line editor that replaces the default GNU Readline
 3. [`volian/nala`](https://gitlab.com/volian/nala): frontend for `libapt-pkg`
 
-### :crab: Written in Rust
+### Written in Rust
 
 > [!TIP]
 >
