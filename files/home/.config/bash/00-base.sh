@@ -1,10 +1,10 @@
 #! /usr/bin/env bash
 
-# version       0.1.0
+# version       0.2.0
 # sourced by    ${HOME}/.bashrc
 # task          setup functions required during setup
 
-if ! declare -p '__command_exists' &>/dev/null; then
+if ! type -t '__command_exists' &>/dev/null; then
   function __command_exists() {
     command -v "${1:?Command name is required}" &>/dev/null
   }
@@ -17,12 +17,11 @@ function __is_bash_function() {
   [[ $(type -t "${1:?Name of type to check is required}" || :) == 'function' ]]
 }
 
-function __uds__declare_with_helpers() {
-  declare -f "${@}"              \
+function __uds__declare_helpers() {
+  declare -f do_as_root          \
     __uds__execute_real_command  \
     __command_exists             \
-    __is_bash_function           \
-    do_as_root
+    __is_bash_function
 }
 
 function __uds__execute_real_command() {
@@ -52,8 +51,7 @@ function do_as_root() {
   fi
 
   if __is_bash_function "${1:?Command is required}"; then
-    # shellcheck disable=SC2312
-    ${SU_COMMAND} bash -c "$(__uds__declare_with_helpers "${1}") ; ${*}"
+    ${SU_COMMAND} bash -c "$(__uds__declare_helpers || :) ; ${*}"
   else
     ${SU_COMMAND} "${@}"
   fi
