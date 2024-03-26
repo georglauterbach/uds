@@ -2,7 +2,7 @@
 
 # version       0.2.0
 # sourced by    ${HOME}/.bashrc
-# task          setup functions required during setup
+# task          set up functions required during setup
 
 if ! type -t '__command_exists' &>/dev/null; then
   function __command_exists() {

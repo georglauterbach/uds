@@ -1,28 +1,28 @@
 #! /usr/bin/env bash
 
-# version       0.4.0
+# version       0.5.0
 # sourced by    ${HOME}/.bashrc
-# task          provides Bash's main setup
+# task          provide Bash's main setup
 
 function setup_misc() {
   shopt -s histappend checkwinsize globstar autocd
 }
 
 function setup_variables() {
-  export VISUAL='nvim'
-  export EDITOR=${VISUAL}
-  export PAGER='less -R'
+  export VISUAL EDITOR PAGER
+
+  VISUAL='nano'
+  __command_exists 'vi' && VISUAL='vi'
+  __command_exists 'vim' && VISUAL='vim'
+  __command_exists 'nvim' && VISUAL='nvim'
+
+  EDITOR=${VISUAL}
+  PAGER="$(command -v less) -R"
 
   if ! __command_exists ble; then
     export HISTCONTROL='ignoreboth'
     export HISTSIZE=10000
     export HISTFILESIZE=10000
-  fi
-
-  if __command_exists batcat; then
-    export MANPAGER="sh -c 'col -bx | batcat -l man --style=plain --theme=gruvbox-dark'"
-    export MANROFFOPT='-c'
-    export BAT_PAGER=${PAGER}
   fi
 }
 
@@ -45,6 +45,9 @@ function setup_completion() {
 
 function setup_prompt() {
   export PROMPT_DIRTRIM=4
+
+  # disable blinking cursor (e.g., in TMUX)
+  printf '\033[2 q'
 
   if ! __command_exists ble; then
     PS2=''         # continuation shell prompt

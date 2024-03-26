@@ -1,9 +1,8 @@
 #! /usr/bin/env bash
 
-# version       0.2.0
+# version       0.3.0
 # sourced by    ${HOME}/.bashrc
-# task          setup up miscellaneous programs
-#               if they are installed
+# task          setup up miscellaneous programs if they are installed
 
 function setup_fzf() {
   export PATH="${PATH:-}:${HOME}/.fzf/bin"
@@ -43,12 +42,35 @@ function setup_ble() {
 }
 
 function setup_misc_programs() {
+  if __command_exists batcat; then
+    export MANPAGER="bash -c 'col -bx | batcat -l man --style=plain --theme=gruvbox-dark'"
+    export MANROFFOPT='-c'
+    # `PAGER` is set in `10-setup.sh`
+    # shellcheck disable=SC2154
+    export BAT_PAGER=${PAGER}
+    # make sure `PAGER` is set before this alias is defined
+    alias less='batcat --style=plain --paging=always --color=always --theme=gruvbox-dark'
+  fi
+
   if __command_exists kubectl; then
     alias k='kubectl'
     complete -o default -F __start_kubectl k
   fi
 
-  __command_exists polybar && alias rp='killall polybar && ${HOME}/.config/polybar/launch.sh'
+  if __command_exists polybar; then
+    alias rp='killall polybar && ${HOME}/.config/polybar/launch.sh'
+  fi
+
+  if __command_exists btop; then
+    alias htop='btop'
+  fi
+
+  if __command_exists 'gitui'; then
+    alias g='gitui'
+  else
+    alias g='git diff'
+  fi
+
 }
 
 for __FUNCTION in 'fzf' 'rust' 'ble' 'misc_programs'; do

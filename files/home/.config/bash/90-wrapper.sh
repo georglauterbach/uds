@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# version       0.3.0
+# version       0.3.1
 # sourced by    ${HOME}/.bashrc
 # task          provides helper and wrapper functions
 #               for common tasks and commands
@@ -34,7 +34,7 @@ function git() {
     ( 'update' )
       git fetch --all --tags --prune
       git pull
-      git submodule update
+      git submodule update --recursive
       ;;
     ( * ) __uds__execute_real_command git "${@}" ;;
   esac
