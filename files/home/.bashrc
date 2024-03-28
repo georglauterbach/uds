@@ -29,7 +29,7 @@ function bash_setup() {
   load_helper '90-wrapper.sh'
   load_helper '99-custom.sh'
 
-  if command -v starship &>/dev/null; then
+  if __command_exists 'starship'; then
     export STARSHIP_CONFIG="${HOME}/.config/bash/starship.toml"
     eval "$(starship init bash || :)"
   fi
