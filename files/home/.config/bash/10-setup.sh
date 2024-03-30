@@ -17,7 +17,7 @@ function setup_path() {
 
   for LOCAL_PATH in "${PATHS[@]}"; do
     if [[ -d ${LOCAL_PATH} ]] && [[ ${PATH} != *${LOCAL_PATH}* ]]; then
-      export PATH="${LOCAL_PATH}:${PATH}"
+      export PATH="${LOCAL_PATH}${PATH:+:${PATH}}"
     fi
   done
 
