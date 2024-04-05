@@ -34,8 +34,6 @@ function setup_path() {
 }
 
 function setup_variables() {
-  export VISUAL EDITOR PAGER
-
   VISUAL='nano'
   __command_exists 'vi' && VISUAL='vi'
   __command_exists 'vim' && VISUAL='vim'
@@ -43,6 +41,10 @@ function setup_variables() {
 
   EDITOR=${VISUAL}
   PAGER="$(command -v less) -R"
+
+  [[ -v GPG_TTY ]] || GPG_TTY=$(tty)
+
+  export VISUAL EDITOR PAGER GPG_TTY
 
   if ! __command_exists 'ble'; then
     export HISTCONTROL='ignoreboth'
