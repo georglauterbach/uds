@@ -4,11 +4,11 @@
 function __log_unexpected_error() {
   local MESSAGE="unexpected error occurred :: script='${SCRIPT:-${0}}' | function='${1:-none (global)}'"
   MESSAGE+=" | command='${2:-?}' | line = '${3:-?}' | exit-code=${4:-?}"
-  log 'err' "${MESSAGE}"
+  log 'error' "${MESSAGE}"
 }
 
 # shellcheck disable=SC2034
-LOG_LEVEL=${LOG_LEVEL:-inf}
+LOG_LEVEL=${LOG_LEVEL:-info}
 SCRIPT='UDS Setup'
 readonly GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/main/files/'
 readonly TMP_CHECK_FILE='/tmp/.uds_running'
@@ -24,13 +24,13 @@ shopt -s inherit_errexit
 # shellcheck disable=SC2312
 if ! source <(wget -q -O- https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh 2>/dev/null)
 then
-  echo -e "[  \e[91mERROR\e[0m  ] Could not access GitHub - please run 'wget -q -O- https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh' manually and resolve the errors" >&2
+  echo -e "$(date --iso-8601='seconds')  ERROR  setup.sh  --  Could not access GitHub - please run 'wget -q -O- https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh' manually and resolve the errors" >&2
   exit 2
 fi
 
 function purge_snapd() {
   command -v snap &>/dev/null || return 0
-  log 'inf' "Purging 'snapd'"
+  log 'info' "Purging 'snapd'"
 
   killall snap
   systemctl stop snapd
@@ -47,11 +47,11 @@ function purge_snapd() {
   apt-mark -qq hold snapd
   rm -rf /var/cache/snapd/ "${HOME}/snapd" "${HOME}/snap"
 
-  log 'deb' "Finished purging 'snapd'"
+  log 'debug' "Finished purging 'snapd'"
 }
 
 function add_ppas() {
-  log 'inf' 'Adding PPAs'
+  log 'info' 'Adding PPAs'
 
   wget -q -O /etc/apt/sources.list "${GITHUB_RAW_URL}apt/sources.list"
 
@@ -74,14 +74,14 @@ function add_ppas() {
 
   if [[ $(uname -m || :) != 'x86_64' ]]
   then
-    log 'deb' 'Fixing sources for ARM64'
+    log 'debug' 'Fixing sources for ARM64'
     for PPA_SOURCE_FILE in /etc/apt/sources.list.d/*
     do
       sed -i -E 's|(Architectures=)amd64|\1arm64|g' "${PPA_SOURCE_FILE}"
     done
   fi
 
-  log 'deb' 'Overriding Firefox PPA priority to not use the Snap-package'
+  log 'debug' 'Overriding Firefox PPA priority to not use the Snap-package'
   cat >/etc/apt/preferences.d/mozilla-firefox << "EOM"
 Package: *
 Pin: release o=LP-PPA-mozillateam
@@ -91,23 +91,23 @@ EOM
 Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
 EOM
 
-  log 'deb' 'Finished adding PPAs'
-  log 'inf' 'Updating package signatures'
+  log 'debug' 'Finished adding PPAs'
+  log 'info' 'Updating package signatures'
   apt-get -qq update
 }
 
 function install_packages() {
-  log 'deb' 'Upgrading packages'
+  log 'debug' 'Upgrading packages'
   apt-get -qq upgrade
   apt-get -qq dist-upgrade
 
-  log 'deb' 'Removing update manager'
+  log 'debug' 'Removing update manager'
   apt-get -qq remove update-manager-core
 
-  log 'deb' 'Removing no longer required packages'
+  log 'debug' 'Removing no longer required packages'
   apt-get -qq autoremove
 
-  log 'deb' 'Installing packages now'
+  log 'debug' 'Installing packages now'
   local PACKAGES=(
     'alacritty'
     'bash-completion'
@@ -151,50 +151,50 @@ function install_packages() {
 
   if ! apt-get install -qq "${PACKAGES[@]}"
   then
-    log 'err' 'Package installation was unsuccessful'
+    log 'error' 'Package installation was unsuccessful'
     exit 1
   fi
 
-  log 'deb' 'Applying VS Code patch'
+  log 'debug' 'Applying VS Code patch'
   local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
   if [[ -f ${CODE_SOURCES_FILE} ]]
   then
     echo '# deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >"${CODE_SOURCES_FILE}"
   fi
 
-  log 'deb' 'Removing unwanted packages now'
+  log 'debug' 'Removing unwanted packages now'
   apt-get -qq remove --purge i3xrocks regolith-i3xrocks-config
 
-  log 'deb' 'Removing unwanted packages now'
+  log 'debug' 'Removing unwanted packages now'
   apt-get -qq autoremove
 
-  log 'deb' 'Installing Starship prompt'
+  log 'debug' 'Installing Starship prompt'
   wget -q -O install_starship.sh https://starship.rs/install.sh
   sh install_startship.sh --force >/dev/null
 
-  log 'inf' 'To install ble.sh, visit https://github.com/akinomyoga/ble.sh'
+  log 'info' 'To install ble.sh, visit https://github.com/akinomyoga/ble.sh'
 
-  log 'deb' 'Finished installing packages'
+  log 'debug' 'Finished installing packages'
 }
 
 function place_configuration_files() {
-  log 'inf' 'Placing configuration files'
+  log 'info' 'Placing configuration files'
 
-  log 'deb' "Setting up 'doas'"
+  log 'debug' "Setting up 'doas'"
   echo "permit persist ${USER}" >/etc/doas.conf
   chown -c root:root /etc/doas.conf
   chmod -c 0400 /etc/doas.conf
   if doas -C /etc/doas.conf
   then
-    log 'deb' 'doas config looks good'
+    log 'debug' 'doas config looks good'
   else
-    log 'war' 'doas config has errors - do not use it immediately'
+    log 'warn' 'doas config has errors - do not use it immediately'
   fi
 
-  log 'deb' 'Settung of user-specific configuration'
+  log 'debug' 'Settung of user-specific configuration'
   if ! cd "${HOME}"
   then
-    log 'err' 'Could not change directory to home directory - cannot place configuration files'
+    log 'error' 'Could not change directory to home directory - cannot place configuration files'
     exit 1
   fi
 
@@ -238,8 +238,8 @@ function place_configuration_files() {
   chown "${USER}:${USER}" "${HOME}/.bashrc"
   chown -R "${USER}:${USER}" "${HOME}/.config"
 
-  log 'inf' 'To change the bookmarks in Nautilus, edit ~/.config/user-firs.dirs, ~/.config/gtk-3.0/bookmarks, and /etc/xdg/user-dirs.defaults'
-  log 'deb' 'Finished placing configuration files'
+  log 'info' 'To change the bookmarks in Nautilus, edit ~/.config/user-firs.dirs, ~/.config/gtk-3.0/bookmarks, and /etc/xdg/user-dirs.defaults'
+  log 'debug' 'Finished placing configuration files'
 }
 
 function main() {
@@ -247,10 +247,9 @@ function main() {
   then
     touch "${TMP_CHECK_FILE}"
 
-    log 'deb' 'Running user-specific setup'
     gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]" || :
 
-    log 'deb' 'Starting actual setup'
+    log 'debug' 'Starting actual setup'
     # shellcheck disable=SC2312
     sudo env - USER="${USER}" HOME="${HOME}" LOG_LEVEL="${LOG_LEVEL}" bash "$(realpath -eL "${BASH_SOURCE[0]}")"
     exit
@@ -258,18 +257,19 @@ function main() {
 
   if [[ ! -f ${TMP_CHECK_FILE} ]]
   then
-    log 'err' 'Do not run this script as root yourself'
+    log 'error' 'Do not run this script as root yourself'
     exit 1
   fi
 
   cd /tmp
 
-  log 'inf' 'Starting UDS setup process'
+  log 'info' 'Starting UDS setup process'
   #purge_snapd
   add_ppas
   install_packages
   place_configuration_files
   log 'inf' 'Finished UDS setup process'
+  log 'info' 'Finished UDS setup process'
 }
 
 main "${@}"
