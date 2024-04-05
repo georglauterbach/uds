@@ -1,8 +1,8 @@
-# Ubuntu Desktop Setup (UDS)
+# Ubuntu (Desktop) Setup (UDS)
 
 ## :page_with_curl: About
 
-UDS configures Ubuntu by installing various packages and placing (new) configuration files. UDS will (optionally) completely remove `snapd`, setup Personal Package Archives (PPAs), install basic packages, and place configuration files.
+UDS configures Ubuntu on `amd64` by installing various packages and placing (new) configuration files. UDS will (optionally) completely remove `snapd`, setup Personal Package Archives (PPAs), install basic packages, and place configuration files.
 
 | Property            | UDS' Choice                                  |
 | :------------------ | :------------------------------------------- |
@@ -13,6 +13,10 @@ UDS configures Ubuntu by installing various packages and placing (new) configura
 [ubuntu-23.10::web]: https://releases.ubuntu.com/23.10/
 [regolith::web]: https://regolith-desktop.com/
 [gruvbox-material::github]: https://github.com/sainnhe/gruvbox-material
+
+> [!NOTE]
+>
+> We do not support `arm64` because messing with APT sources is difficult, can easy brick your system.
 
 ## :rocket: Usage
 
@@ -28,6 +32,16 @@ $ bash setup.sh
 ...
 
 $ reboot
+```
+
+If you do not have a graphical user interface, you can use `--no-gui` to install only those packages and configuration files required in such a case:
+
+```console
+$ wget https://raw.githubusercontent.com/georglauterbach/uds/main/setup.sh
+$ bash setup.sh --no-gui
+...
+
+$ exit
 ```
 
 ## :mega: Supplementary Projects

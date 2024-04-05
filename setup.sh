@@ -14,6 +14,7 @@ readonly GITHUB_RAW_URL='https://raw.githubusercontent.com/georglauterbach/uds/m
 readonly TMP_CHECK_FILE='/tmp/.uds_running'
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
+export INSTALL_GUI=true
 
 trap '__log_unexpected_error "${FUNCNAME[0]:-}" "${BASH_COMMAND:-}" "${LINENO:-}" "${?:-}"' ERR
 trap 'rm -f ${TMP_CHECK_FILE}' EXIT
@@ -56,15 +57,21 @@ function add_ppas() {
   wget -q -O /etc/apt/sources.list "${GITHUB_RAW_URL}apt/sources.list"
 
   local PPA_SOURCES_FILES=(
-    'alacritty'
-    'cryptomator'
     'eza'
     'git-core'
-    'mozillateam'
     'neovim-unstable'
-    'regolith'
-    'vscode'
   )
+
+  if ${INSTALL_GUI}
+  then
+    PPA_SOURCES_FILES+=(
+      'alacritty'
+      'cryptomator'
+      'mozillateam'
+      'regolith'
+      'vscode'
+    )
+  fi
 
   local PPA_SOURCE_FILE
   for PPA_SOURCE_FILE in "${PPA_SOURCES_FILES[@]}"
@@ -72,24 +79,18 @@ function add_ppas() {
     wget -q -O "/etc/apt/sources.list.d/${PPA_SOURCE_FILE}.sources" "${GITHUB_RAW_URL}apt/${PPA_SOURCE_FILE}.sources"
   done
 
-  if [[ $(uname -m || :) != 'x86_64' ]]
+  if ${INSTALL_GUI}
   then
-    log 'debug' 'Fixing sources for ARM64'
-    for PPA_SOURCE_FILE in /etc/apt/sources.list.d/*
-    do
-      sed -i -E 's|(Architectures=)amd64|\1arm64|g' "${PPA_SOURCE_FILE}"
-    done
-  fi
-
-  log 'debug' 'Overriding Firefox PPA priority to not use the Snap-package'
-  cat >/etc/apt/preferences.d/mozilla-firefox << "EOM"
+    log 'debug' 'Overriding Firefox PPA priority to not use the Snap-package'
+    cat >/etc/apt/preferences.d/mozilla-firefox << "EOM"
 Package: *
 Pin: release o=LP-PPA-mozillateam
 Pin-Priority: 1001
 EOM
-  cat >/etc/apt/apt.conf.d/51unattended-upgrades-firefox << "EOM"
+    cat >/etc/apt/apt.conf.d/51unattended-upgrades-firefox << "EOM"
 Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
 EOM
+  fi
 
   log 'debug' 'Finished adding PPAs'
   log 'info' 'Updating package signatures'
@@ -102,75 +103,84 @@ function install_packages() {
   apt-get -qq dist-upgrade
 
   log 'debug' 'Removing update manager'
-  apt-get -qq remove update-manager-core
+  apt-get -qq purge update-manager-core
 
   log 'debug' 'Removing no longer required packages'
   apt-get -qq autoremove
 
   log 'debug' 'Installing packages now'
   local PACKAGES=(
-    'alacritty'
     'bash-completion'
     'bat'
     'btop'
     'build-essential'
-    'code'
-    'cups'
     'doas'
-    'eog'
-    'evince'
     'eza'
-    'firefox'
-    'fonts-firacode'
-    'fonts-font-awesome'
-    'fonts-nerd-font-firamono'
     'git'
     'git-lfs'
-    'gnome-calculator'
-    'gnome-screenshot'
-    'gnome-terminal'
-    'gnome-tweaks'
     'gnupg2'
     'nala'
-    'nautilus'
-    'neofetch'
     'neovim'
-    'nextcloud-desktop'
-    'p7zip-full'
     'python3-neovim'
-    'regolith-desktop'
-    'regolith-session-sway'
-    'regolith-look-gruvbox'
-    'regolith-wm-user-programs'
     'ripgrep'
-    'seahorse'
     'xz-utils'
-    'yaru-theme-icon'
-    'yaru-theme-sound'
   )
 
+  if ${INSTALL_GUI}
+  then
+    local PACKAGES+=(
+      'alacritty'
+      'code'
+      'cups'
+      'eog'
+      'evince'
+      'firefox'
+      'fonts-firacode'
+      'fonts-font-awesome'
+      'fonts-nerd-font-firamono'
+      'gnome-calculator'
+      'gnome-screenshot'
+      'gnome-terminal'
+      'gnome-tweaks'
+      'nautilus'
+      'neofetch'
+      'nextcloud-desktop'
+      'p7zip-full'
+      'regolith-desktop'
+      'regolith-session-sway'
+      'regolith-look-gruvbox'
+      'regolith-wm-user-programs'
+      'seahorse'
+      'yaru-theme-icon'
+      'yaru-theme-sound'
+    )
+  fi
+
+  log 'info' "Installing packages: ${PACKAGES[*]}"
   if ! apt-get install -qq "${PACKAGES[@]}"
   then
     log 'error' 'Package installation was unsuccessful'
     exit 1
   fi
 
-  log 'debug' 'Applying VS Code patch'
-  local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
-  if [[ -f ${CODE_SOURCES_FILE} ]]
+  if ${INSTALL_GUI}
   then
-    echo '# deb [arch=amd64,arm64,armhf] http://packages.microsoft.com/repos/code stable main' >"${CODE_SOURCES_FILE}"
-  fi
+    log 'debug' 'Applying VS Code patch'
+    local CODE_SOURCES_FILE='/etc/apt/sources.list.d/vscode.list'
+    if [[ -f ${CODE_SOURCES_FILE} ]]
+    then
+      echo '# deb [arch=amd64] http://packages.microsoft.com/repos/code stable main' >"${CODE_SOURCES_FILE}"
+    fi
 
-  log 'debug' 'Removing unwanted packages now'
-  apt-get -qq remove --purge i3xrocks regolith-i3xrocks-config
+    log 'debug' 'Removing unwanted packages now'
+    apt-get -qq remove --purge i3xrocks regolith-i3xrocks-config
+  fi
 
   log 'debug' 'Removing unwanted packages now'
   apt-get -qq autoremove
 
   log 'debug' 'Installing Starship prompt'
-  wget -q -O install_starship.sh https://starship.rs/install.sh
-  sh install_startship.sh --force >/dev/null
+  curl -sSfL https://starship.rs/install.sh | sh -s -- --force >/dev/null
 
   log 'info' 'To install ble.sh, visit https://github.com/akinomyoga/ble.sh'
 
@@ -191,22 +201,16 @@ function place_configuration_files() {
     log 'warn' 'doas config has errors - do not use it immediately'
   fi
 
-  log 'debug' 'Settung of user-specific configuration'
+  log 'debug' 'Setting up user-specific configuration'
   if ! cd "${HOME}"
   then
     log 'error' 'Could not change directory to home directory - cannot place configuration files'
     exit 1
   fi
 
-  readonly REGOLITH_DIR='.config/regolith3'
   local CONFIG_FILES=(
     '.bashrc'
     '.tmux.conf'
-    '.config/alacritty/alacritty.toml'
-    '.config/alacritty/10-general.toml'
-    '.config/alacritty/20-font.toml'
-    '.config/alacritty/30-colors.toml'
-    '.config/alacritty/40-bindings.toml'
     '.config/bash/10-setup.sh'
     '.config/bash/30-extra_programs.sh'
     '.config/bash/80-aliases.sh'
@@ -214,19 +218,28 @@ function place_configuration_files() {
     '.config/bash/ble.conf'
     '.config/bash/starship.toml'
     '.config/nvim/init.lua'
-    '.config/polybar/launch.sh'
-    '.config/polybar/polybar.conf'
-    '.config/tmux/30-design.conf'
-    '.config/tmux/40-keys.conf'
-    '.config/tmux/50-plugins.conf'
-    "${REGOLITH_DIR}/i3/config.d/98-bindings"
-    "${REGOLITH_DIR}/i3/config.d/99-workspaces"
-    "${REGOLITH_DIR}/looks/gruvbox-material/i3-wm"
-    "${REGOLITH_DIR}/looks/gruvbox-material/root"
-    "${REGOLITH_DIR}/picom.conf"
-    "${REGOLITH_DIR}/wallpaper.jpg"
-    "${REGOLITH_DIR}/Xresources"
   )
+
+  if ${INSTALL_GUI}
+  then
+    readonly REGOLITH_DIR='.config/regolith3'
+    CONFIG_FILES+=(
+      '.config/alacritty/alacritty.toml'
+      '.config/alacritty/10-general.toml'
+      '.config/alacritty/20-font.toml'
+      '.config/alacritty/30-colors.toml'
+      '.config/alacritty/40-bindings.toml'
+      '.config/polybar/launch.sh'
+      '.config/polybar/polybar.conf'
+      "${REGOLITH_DIR}/i3/config.d/98-bindings"
+      "${REGOLITH_DIR}/i3/config.d/99-workspaces"
+      "${REGOLITH_DIR}/looks/gruvbox-material/i3-wm"
+      "${REGOLITH_DIR}/looks/gruvbox-material/root"
+      "${REGOLITH_DIR}/picom.conf"
+      "${REGOLITH_DIR}/wallpaper.jpg"
+      "${REGOLITH_DIR}/Xresources"
+    )
+  fi
 
   for FILE in "${CONFIG_FILES[@]}"
   do
@@ -234,25 +247,52 @@ function place_configuration_files() {
     wget -q -O "${HOME}/${FILE}" "${GITHUB_RAW_URL}home/${FILE}"
   done
 
-  sed -i "s|HOME|${HOME}|g" "${HOME}/${REGOLITH_DIR}/Xresources"
+  if ${INSTALL_GUI}
+  then
+    sed -i "s|HOME|${HOME}|g" "${HOME}/${REGOLITH_DIR}/Xresources"
+    log 'info' 'To change the bookmarks in Nautilus, edit ~/.config/user-firs.dirs, ~/.config/gtk-3.0/bookmarks, and /etc/xdg/user-dirs.defaults'
+  fi
+
   chown "${USER}:${USER}" "${HOME}/.bashrc"
   chown -R "${USER}:${USER}" "${HOME}/.config"
 
-  log 'info' 'To change the bookmarks in Nautilus, edit ~/.config/user-firs.dirs, ~/.config/gtk-3.0/bookmarks, and /etc/xdg/user-dirs.defaults'
   log 'debug' 'Finished placing configuration files'
 }
 
 function main() {
+  if [[ $(uname -m || :) != 'x86_64' ]]
+  then
+    log 'error' 'arm64 is not supported (APT sources are complicated for arm64)'
+    exit 1
+  fi
+
+  [[ ${*} == *--no-gui* ]] && INSTALL_GUI=false
+
   if [[ ${EUID} -ne 0 ]]
   then
     touch "${TMP_CHECK_FILE}"
 
-    gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]" || :
+    if ${INSTALL_GUI}
+    then
+      log 'debug' 'Running user-specific setup'
+      gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]" || :
+    fi
 
     log 'debug' 'Starting actual setup'
     # shellcheck disable=SC2312
-    sudo env - USER="${USER}" HOME="${HOME}" LOG_LEVEL="${LOG_LEVEL}" bash "$(realpath -eL "${BASH_SOURCE[0]}")"
+    sudo env -                 \
+      USER="${USER}"           \
+      HOME="${HOME}"           \
+      LOG_LEVEL="${LOG_LEVEL}" \
+      bash "$(realpath -eL "${BASH_SOURCE[0]}")" "${@}"
     exit
+  fi
+
+  if ${INSTALL_GUI}
+  then
+    log 'info' 'Not configuring GUI'
+  else
+    log 'info' 'Configuring GUI'
   fi
 
   if [[ ! -f ${TMP_CHECK_FILE} ]]
@@ -265,10 +305,9 @@ function main() {
 
   log 'info' 'Starting UDS setup process'
   #purge_snapd
-  add_ppas
-  install_packages
-  place_configuration_files
-  log 'inf' 'Finished UDS setup process'
+  add_ppas "${@}"
+  install_packages "${@}"
+  place_configuration_files "${@}"
   log 'info' 'Finished UDS setup process'
 }
 
