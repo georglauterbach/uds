@@ -19,6 +19,7 @@
 *.sh     text    diff=bash
 *.md     text    diff=markdown
 *.txt    text
+*.conf   text
 
 # -----------------------------------------------
 # ----  Images  ---------------------------------
