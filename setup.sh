@@ -22,10 +22,10 @@ set -eE -u -o pipefail
 shopt -s inherit_errexit
 
 # shellcheck source=/dev/null
-# shellcheck disable=SC2312
-if ! source <(wget -q -O- https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh 2>/dev/null)
+if ! source <(curl -qsSfL https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh || :) \
+|| [[ $(type -t log || :) != 'function' ]]
 then
-  echo -e "$(date --iso-8601='seconds')  ERROR  setup.sh  --  Could not access GitHub - please run 'wget -q -O- https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh' manually and resolve the errors" >&2
+  echo -e "$(date --iso-8601='seconds' || :)  ERROR  setup.sh  --  Could not access GitHub - please run 'curl -qsSfL https://raw.githubusercontent.com/georglauterbach/libbash/main/modules/log.sh' manually and resolve the errors" >&2
   exit 2
 fi
 
