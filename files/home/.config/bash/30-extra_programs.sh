@@ -17,25 +17,6 @@ function setup_rust() {
   __command_exists sccache && export RUSTC_WRAPPER='sccache'
 }
 
-function setup_ble() {
-  local BLE_SOURCE="${HOME}/.local/share/blesh/ble.sh"
-  if [[ -e ${BLE_SOURCE} ]]; then
-    local BLE_CONFIG_FILE="${HOME}/.config/bash/ble.conf"
-    if [[ -e ${BLE_CONFIG_FILE} ]]; then
-      # shellcheck source=/dev/null
-      source "${BLE_SOURCE}" --attach=none --rcfile "${BLE_CONFIG_FILE}"
-    else
-      # shellcheck source=/dev/null
-      source "${BLE_SOURCE}" --attach=none
-    fi
-
-    if __command_exists 'fzf'; then
-      ble-import -d integration/fzf-completion
-      ble-import -d integration/fzf-key-bindings
-    fi
-  fi
-}
-
 function setup_misc_programs() {
   local BAT_NAME='batcat' # use 'bat' on older distributions
   if __command_exists "${BAT_NAME}"; then
@@ -70,6 +51,11 @@ function setup_misc_programs() {
     alias g='git diff'
   fi
 
+  if __command_exists zoxide; then
+    eval "$(zoxide init bash)"
+    alias cd='z'
+  fi
+
   if __command_exists 'starship'; then
     STARSHIP_CONFIG="${HOME}/.config/bash/starship.toml"
     if [[ -f ${STARSHIP_CONFIG} ]] && [[ -r ${STARSHIP_CONFIG} ]]; then
@@ -80,7 +66,30 @@ function setup_misc_programs() {
   fi
 }
 
-for __FUNCTION in 'fzf' 'rust' 'ble' 'misc_programs'; do
+function setup_ble() {
+  local BLE_SOURCE="${HOME}/.local/share/blesh/ble.sh"
+  if [[ -e ${BLE_SOURCE} ]]; then
+    local BLE_CONFIG_FILE="${HOME}/.config/bash/ble.conf"
+    if [[ -e ${BLE_CONFIG_FILE} ]]; then
+      # shellcheck source=/dev/null
+      source "${BLE_SOURCE}" --attach=none --rcfile "${BLE_CONFIG_FILE}"
+    else
+      # shellcheck source=/dev/null
+      source "${BLE_SOURCE}" --attach=none
+    fi
+
+    if __command_exists 'fzf'; then
+      ble-import -d integration/fzf-completion
+      ble-import -d integration/fzf-key-bindings
+    fi
+
+    if __command_exists 'zoxide'; then
+      ble-import -f integration/zoxide
+    fi
+  fi
+}
+
+for __FUNCTION in 'fzf' 'rust' 'misc_programs' 'ble'; do
   "setup_${__FUNCTION}"
   unset "setup_${__FUNCTION}"
 done

@@ -41,8 +41,7 @@ function setup_variables() {
 
   EDITOR=${VISUAL}
   PAGER="$(command -v less) -R"
-
-  [[ -v GPG_TTY ]] || GPG_TTY=$(tty)
+  GPG_TTY=$(tty)
 
   export VISUAL EDITOR PAGER GPG_TTY
 
@@ -76,10 +75,8 @@ function setup_prompt() {
   # disable blinking cursor (e.g., in TMUX)
   printf '\033[2 q'
 
-  if ! __command_exists 'ble'; then
-    PS2=''         # continuation shell prompt
-    PS4='[TRACE] ' # `set -x` tracing prompt
-  fi
+  PS2=''  # continuation shell prompt
+  PS4='> ' # `set -x` tracing prompt
 
   if ! __command_exists 'starship' && [[ -v debian_chroot ]] && [[ -r /etc/debian_chroot ]]; then
     # shellcheck disable=SC2155
